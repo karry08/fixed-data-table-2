@@ -140,9 +140,19 @@ class FixedDataTableCell extends React.Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    if (nextProps.isScrolling && this.props.rowIndex === nextProps.rowIndex) {
-      return false;
-    }
+    return true;
+    if (
+    this.props.visible !== nextProps.visible ||
+    this.props.fake !== nextProps.fake
+  ) {
+    return true;
+  }
+
+  // if col is still fake or still not visible then no need to update
+  if (nextProps.fake || !nextProps.visible) {
+    return false;
+  }
+    
 
     //Performance check not enabled
     if (!nextProps.pureRendering) {
@@ -173,6 +183,9 @@ class FixedDataTableCell extends React.Component {
   };
 
   render() /*object*/ {
+    if(this.props.fake){
+      return null;
+    }
     var { height, width, columnKey, isHeaderOrFooter, ...props } = this.props;
 
     var style = {

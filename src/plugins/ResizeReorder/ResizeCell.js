@@ -47,7 +47,7 @@ class ResizeCell extends React.PureComponent {
     } else {
       style.left = left;
     }
-
+//console.log(children)
     let content;
     if (React.isValidElement(children)) {
       content = React.cloneElement(children, props);
@@ -60,7 +60,8 @@ class ResizeCell extends React.PureComponent {
         </FixedDataTableCellDefault>
       );
     }
-
+   // console.log(content)
+//console.log(this.props)
     return (
       <>
         <ResizerKnob

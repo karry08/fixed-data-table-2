@@ -61,9 +61,10 @@ class FixedDataTableContainer extends React.Component {
     );
 
     this.reduxStore.dispatch(initialize(props))
-
+   // console.log(1)
     this.unsubscribe = this.reduxStore.subscribe(this.update);
     this.state = this.getBoundState();
+   
   }
 
   componentWillReceiveProps(nextProps) {
@@ -140,7 +141,20 @@ class FixedDataTableContainer extends React.Component {
       'scrollJumpedX',
       'scrollJumpedY',
       'tableSize',
+      'scrollContentWidth',
+      'scrollLeft',
+    'scrollToColumn',
+    'colSettings',
+    'firstColIndex',
+     'firstColOffset',
+     'endColIndex',
+     'cols',
+    // 'scrollToColumn',
+     'colOffsets',
+     'colBufferSet',
+     
     ]);
+   // console.log(boundState)
     return boundState;
   }
 

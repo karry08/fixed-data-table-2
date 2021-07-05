@@ -20,6 +20,7 @@ import { sumPropWidths } from './helper/widthHelper';
 import FixedDataTableCell from './FixedDataTableCell';
 import FixedDataTableTranslateDOMPosition from './FixedDataTableTranslateDOMPosition';
 import _ from 'lodash';
+import inRange from 'lodash/inRange';
 
 class FixedDataTableCellGroupImpl extends React.Component {
   /**
@@ -119,10 +120,15 @@ class FixedDataTableCellGroupImpl extends React.Component {
   constructor(props) {
     super(props);
     this._initialRender = true;
+    this._staticCells=[];
   }
 
   componentDidMount() {
     this._initialRender = false;
+  }
+  shouldComponentUpdate() /*boolean*/ {
+    // Don't add PureRenderMixin to this component please.
+    return true;
   }
 
   /**
@@ -136,48 +142,81 @@ class FixedDataTableCellGroupImpl extends React.Component {
       widths: [],
     };
     if (this.props.isHeader) {
-      for (let i = 0, j = columns.length; i < j; i++) {
-        const key = columns[i].props.columnKey || 'cell_' + i;
+      for (let i = 0, j = colsToRender.length; i < j; i++) {
+        var idx=colsToRender[i];
+        if (idx === undefined) {
+          idx =
+            this._staticCells[i] && this._staticCells[i].props.index;
+        //    console.log(i1);
+        }
+        
+        const key = columns[idx].props.columnKey || 'cell_' + idx;
         cellGroupColumnWidths.keys.push(key);
-        cellGroupColumnWidths.widths.push(columns[i].props.width);
+        cellGroupColumnWidths.widths.push(columns[idx].props.width);
       }
     }
     return cellGroupColumnWidths;
   };
+  componentWillUnmount() {
+    this._staticCells.length = 0;
+  }
+
 
   render() /*object*/ {
     var props = this.props;
     var columns = props.columns;
-    var cells = new Array(columns.length);
+    var colsToRender=props.colsToRender || [];
+    var isScrolling=props.isScrolling;
+    //var cells = new Array(columns.length);
     var contentWidth = sumPropWidths(columns);
-
+    if (isScrolling) {
+      // allow static array to grow while scrolling
+      this._staticCells.length = Math.max(
+        this._staticCells.length,
+        colsToRender.length
+      );
+    } else {
+      // when scrolling is done, static array can shrink to fit the buffer
+      this._staticCells.length = colsToRender.length;
+    }
     var currentPosition = 0;
-    for (var i = 0, j = columns.length; i < j; i++) {
-      var columnProps = columns[i].props;
-      var cellTemplate = columns[i].template;
-
-      var recyclable = _.get(
+    const offsetColumn=this.props.fixedColumnsCount;
+    for (var i = 0, j = colsToRender.length; i < j; i++) {
+      var idx=colsToRender[i];
+      if (idx === undefined) {
+        idx =
+          this._staticCells[i] && this._staticCells[i].props.index;
+      //    console.log(i1);
+      }
+      //idx-=offsetColumn;
+    //  console.log(idx)
+    if(!(this.props.columns[idx]))continue;
+      currentPosition=this.props.columns[idx].offset;
+  //    currentPosition=this.props.colOffsets[idx+offsetColumn] - this.props.offsetLeft;
+      var columnProps =columns[idx]&& columns[idx].props;
+      var cellTemplate =columns[idx]&& columns[idx].template;
+    //  console.log(columnProps)
+      var recyclable =columnProps&& _.get(
         this.state.isCellRecyclableByColumnId,
         [columnProps.columnKey],
         columnProps.allowCellsRecycling
       );
-      if (
-        !recyclable ||
-        (currentPosition - props.left <= props.width &&
-          currentPosition - props.left + columnProps.width >= 0)
-      ) {
-        var key = columnProps.columnKey || 'cell_' + i;
-        cells[i] = this._renderCell(
+ //     if (
+   //     !recyclable 
+        
+     // ) {
+      //  var key = columnProps.columnKey || 'cell_' + i;
+        this._staticCells[i] = this._renderCell(
           props.rowIndex,
           props.rowHeight,
           columnProps,
           cellTemplate,
           currentPosition,
-          key,
+          i,idx,
           contentWidth
         );
-      }
-      currentPosition += columnProps.width;
+     // }
+      //currentPosition += columnProps.width;
     }
     var style = {
       height: props.height,
@@ -192,13 +231,13 @@ class FixedDataTableCellGroupImpl extends React.Component {
       this._initialRender,
       this.props.isRTL
     );
-
+//console.log(this._staticCells)
     return (
       <div
         className={cx('fixedDataTableCellGroupLayout/cellGroup')}
         style={style}
       >
-        {cells}
+        {this._staticCells}
       </div>
     );
   }
@@ -209,9 +248,21 @@ class FixedDataTableCellGroupImpl extends React.Component {
     /*object*/ columnProps,
     /*object*/ cellTemplate,
     /*number*/ left,
-    /*string*/ key,
+    /*string*/ key,index,
     /*number*/ columnGroupWidth
   ) /*object*/ => {
+  //  console.log(1)
+    if(!columnProps) return null;
+  //  console.log(2)
+  //  var cellIsResizable = columnProps.isResizable && this.props.onColumnResize;
+  //  var onColumnResize = cellIsResizable ? this.props.onColumnResize : null;
+    const visible = inRange(
+      index,
+      this.props.firstViewportColIndex,
+      this.props.endViewportColIndex
+    );
+    var fake = index === undefined;
+
     var className = columnProps.cellClassName;
     var pureRendering = columnProps.pureRendering || false;
 
@@ -237,6 +288,7 @@ class FixedDataTableCellGroupImpl extends React.Component {
         onColumnResizeEnd={onColumnResizeEndCallback}
         onColumnReorderEnd={onColumnReorderEndCallback}
         rowIndex={rowIndex}
+        index={index}
         columnKey={columnProps.columnKey}
         width={columnProps.width}
         left={left}
@@ -244,11 +296,14 @@ class FixedDataTableCellGroupImpl extends React.Component {
         columnGroupWidth={columnGroupWidth}
         pureRendering={pureRendering}
         isRTL={this.props.isRTL}
+        fake={fake}
+        visible={visible}
         scrollX={this.props.scrollX}
         isFixed={this.props.isFixed}
         scrollToX={this.props.scrollToX}
         toggleCellsRecycling={this.toggleCellsRecycling}
         getCellGroupWidth={this.getCellGroupWidth}
+        offsetLeft={this.props.offsetLeft}
       />
     );
   };
@@ -331,7 +386,7 @@ class FixedDataTableCellGroup extends React.Component {
         style={style}
         className={cx('fixedDataTableCellGroupLayout/cellGroupWrapper')}
       >
-        <FixedDataTableCellGroupImpl {...props} />
+        <FixedDataTableCellGroupImpl {...props} offsetLeft={this.props.offsetLeft} />
       </div>
     );
   }

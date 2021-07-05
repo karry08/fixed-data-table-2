@@ -748,6 +748,7 @@ class FixedDataTable extends React.Component {
 
     let groupHeader;
     if (groupHeaderHeight > 0) {
+     // console.log(scrollX)
       groupHeader = (
         <FixedDataTableRow
           key="group_header"
@@ -815,6 +816,7 @@ class FixedDataTable extends React.Component {
           showScrollbarY={scrollEnabledY}
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
+          offsetLeft={offsetLeft}
         />
       );
     }
@@ -857,6 +859,10 @@ class FixedDataTable extends React.Component {
         isRTL={this.props.isRTL}
         isHeader={true}
         scrollToX={this._scrollToX}
+        colsToRender={this.props.cols}
+        colOffsets={this.props.colOffsets}
+        firstViewportColIndex={this.props.firstColIndex}
+        endViewportColIndex={this.props.endColIndex}
       />
     );
 
@@ -964,8 +970,11 @@ class FixedDataTable extends React.Component {
         fixedRightColumns={fixedRightCellTemplates}
         firstViewportRowIndex={props.firstRowIndex}
         endViewportRowIndex={props.endRowIndex}
+        firstViewportColIndex={props.firstColIndex}
+        endViewportColIndex={props.endColIndex}
         height={bodyHeight}
         offsetTop={offsetTop}
+  //      offsetLeft={offsetTop}
         onRowClick={props.onRowClick}
         onRowContextMenu={props.onRowContextMenu}
         onRowDoubleClick={props.onRowDoubleClick}
@@ -982,14 +991,17 @@ class FixedDataTable extends React.Component {
         rowExpanded={props.rowExpanded}
         rowKeyGetter={props.rowKeyGetter}
         rowSettings={props.rowSettings}
+        colSettings={props.colSettings}
         scrollLeft={props.scrollX}
         scrollTop={props.scrollY}
         scrollableColumns={scrollableCellTemplates}
         showLastRowBorder={true}
         width={props.tableSize.width}
         rowsToRender={props.rows}
+        colsToRender={props.cols}
         rowOffsets={props.rowOffsets}
         showScrollbarY={scrollEnabledY}
+        colOffsets={props.colOffsets}
         scrollbarYWidth={props.scrollbarYWidth}
         isRTL={props.isRTL}
       />
@@ -1040,6 +1052,7 @@ class FixedDataTable extends React.Component {
       //NOTE (asif) This is a hacky workaround to prevent FDT from setting its internal state
       if (onHorizontalScroll ? onHorizontalScroll(roundedX) : true) {
         scrollActions.scrollToX(roundedX);
+      //  console.log(roundedX)
       }
     }
   };
@@ -1098,6 +1111,8 @@ class FixedDataTable extends React.Component {
     const {
       endRowIndex: oldEndRowIndex,
       firstRowIndex: oldFirstRowIndex,
+      endColIndex: oldEndColIndex,
+      firstColIndex: oldFirstColIndex,
       scrollX: oldScrollX,
       scrollY: oldScrollY,
       tableSize: { ownerHeight: oldOwnerHeight },
@@ -1117,7 +1132,7 @@ class FixedDataTable extends React.Component {
 
     // only call onScrollStart if scrolling wasn't on previously
     if (!this.props.scrolling && onScrollStart) {
-      onScrollStart(oldScrollX, oldScrollY, oldFirstRowIndex, oldEndRowIndex);
+      onScrollStart(oldScrollX, oldScrollY, oldFirstRowIndex, oldEndRowIndex, oldEndRowIndex,oldFirstColIndex, oldEndColIndex);
     }
 
     if (scrollXChanged && onHorizontalScroll) {
@@ -1139,6 +1154,8 @@ class FixedDataTable extends React.Component {
     const {
       endRowIndex,
       firstRowIndex,
+      endColIndex,
+      firstColIndex,
       onScrollEnd,
       scrollActions,
       scrollX,
@@ -1153,7 +1170,7 @@ class FixedDataTable extends React.Component {
     scrollActions.stopScroll();
 
     if (onScrollEnd) {
-      onScrollEnd(scrollX, scrollY, firstRowIndex, endRowIndex);
+      onScrollEnd(scrollX, scrollY, firstRowIndex, endRowIndex, firstColIndex, endColIndex);
     }
   };
 }
