@@ -141,6 +141,7 @@ class FixedDataTableCellGroupImpl extends React.Component {
       keys: [],
       widths: [],
     };
+    const colsToRender=this.props.colsToRender || [];
     if (this.props.isHeader) {
       for (let i = 0, j = colsToRender.length; i < j; i++) {
         var idx=colsToRender[i];

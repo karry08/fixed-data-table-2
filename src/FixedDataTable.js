@@ -816,7 +816,7 @@ class FixedDataTable extends React.Component {
           showScrollbarY={scrollEnabledY}
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
-          offsetLeft={offsetLeft}
+        //  offsetLeft={offsetLeft}
         />
       );
     }
