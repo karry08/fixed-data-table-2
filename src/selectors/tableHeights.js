@@ -91,7 +91,6 @@
    const footOffsetTop = bodyOffsetTop + visibleRowsHeight;
    const scrollbarXOffsetTop = footOffsetTop + footerHeight;
    const scrollbarYHeight = Math.max(0, footOffsetTop - bodyOffsetTop);
-  // console.log(visibleRowsHeight)
  
    return {
      bodyHeight,

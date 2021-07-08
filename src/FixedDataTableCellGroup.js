@@ -136,19 +136,22 @@ class FixedDataTableCellGroupImpl extends React.Component {
    * @returns {{keys: [], widths: []}}
    */
   getCellGroupWidth = () => {
+  
     const { columns } = this.props;
     const cellGroupColumnWidths = {
       keys: [],
       widths: [],
     };
-    const colsToRender=this.props.colsToRender || [];
+    var colsToRender=this.props.colsToRender || [];
+   
     if (this.props.isHeader) {
       for (let i = 0, j = colsToRender.length; i < j; i++) {
         var idx=colsToRender[i];
+        
         if (idx === undefined) {
           idx =
             this._staticCells[i] && this._staticCells[i].props.index;
-        //    console.log(i1);
+    
         }
         
         const key = columns[idx].props.columnKey || 'cell_' + idx;
@@ -167,9 +170,10 @@ class FixedDataTableCellGroupImpl extends React.Component {
     var props = this.props;
     var columns = props.columns;
     var colsToRender=props.colsToRender || [];
+    
     var isScrolling=props.isScrolling;
-    //var cells = new Array(columns.length);
-    var contentWidth = sumPropWidths(columns);
+   
+    var contentWidth = columns.length && (columns[columns.length-1].offset+ columns[columns.length-1].props.width);
     if (isScrolling) {
       // allow static array to grow while scrolling
       this._staticCells.length = Math.max(
@@ -184,19 +188,19 @@ class FixedDataTableCellGroupImpl extends React.Component {
     const offsetColumn=this.props.fixedColumnsCount;
     for (var i = 0, j = colsToRender.length; i < j; i++) {
       var idx=colsToRender[i];
+     
       if (idx === undefined) {
         idx =
           this._staticCells[i] && this._staticCells[i].props.index;
-      //    console.log(i1);
+   
       }
-      //idx-=offsetColumn;
-    //  console.log(idx)
+   
     if(!(this.props.columns[idx]))continue;
       currentPosition=this.props.columns[idx].offset;
-  //    currentPosition=this.props.colOffsets[idx+offsetColumn] - this.props.offsetLeft;
+ 
       var columnProps =columns[idx]&& columns[idx].props;
       var cellTemplate =columns[idx]&& columns[idx].template;
-    //  console.log(columnProps)
+ 
       var recyclable =columnProps&& _.get(
         this.state.isCellRecyclableByColumnId,
         [columnProps.columnKey],
@@ -216,9 +220,9 @@ class FixedDataTableCellGroupImpl extends React.Component {
           i,idx,
           contentWidth
         );
-     // }
-      //currentPosition += columnProps.width;
+     
     }
+
     var style = {
       height: props.height,
       position: 'absolute',
@@ -232,7 +236,7 @@ class FixedDataTableCellGroupImpl extends React.Component {
       this._initialRender,
       this.props.isRTL
     );
-//console.log(this._staticCells)
+
     return (
       <div
         className={cx('fixedDataTableCellGroupLayout/cellGroup')}
@@ -252,9 +256,9 @@ class FixedDataTableCellGroupImpl extends React.Component {
     /*string*/ key,index,
     /*number*/ columnGroupWidth
   ) /*object*/ => {
-  //  console.log(1)
+ 
     if(!columnProps) return null;
-  //  console.log(2)
+  
   //  var cellIsResizable = columnProps.isResizable && this.props.onColumnResize;
   //  var onColumnResize = cellIsResizable ? this.props.onColumnResize : null;
     const visible = inRange(

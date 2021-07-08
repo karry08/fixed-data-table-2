@@ -61,7 +61,7 @@ class FixedDataTableContainer extends React.Component {
     );
 
     this.reduxStore.dispatch(initialize(props))
-   // console.log(1)
+
     this.unsubscribe = this.reduxStore.subscribe(this.update);
     this.state = this.getBoundState();
    
@@ -149,12 +149,14 @@ class FixedDataTableContainer extends React.Component {
      'firstColOffset',
      'endColIndex',
      'cols',
+     'fixedCols',
+     'fixedRightCols',
     // 'scrollToColumn',
      'colOffsets',
      'colBufferSet',
      
     ]);
-   // console.log(boundState)
+   
     return boundState;
   }
 

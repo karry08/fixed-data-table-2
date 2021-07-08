@@ -748,7 +748,7 @@ class FixedDataTable extends React.Component {
 
     let groupHeader;
     if (groupHeaderHeight > 0) {
-     // console.log(scrollX)
+    
       groupHeader = (
         <FixedDataTableRow
           key="group_header"
@@ -816,6 +816,9 @@ class FixedDataTable extends React.Component {
           showScrollbarY={scrollEnabledY}
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
+          colsToRender={props.cols}
+        fixedColsToRender={props.fixedCols}
+        fixedRightColsToRender={props.fixedRightCols}
         //  offsetLeft={offsetLeft}
         />
       );
@@ -860,6 +863,8 @@ class FixedDataTable extends React.Component {
         isHeader={true}
         scrollToX={this._scrollToX}
         colsToRender={this.props.cols}
+        fixedColsToRender={this.props.fixedCols}
+        fixedRightColsToRender={this.props.fixedRightCols}
         colOffsets={this.props.colOffsets}
         firstViewportColIndex={this.props.firstColIndex}
         endViewportColIndex={this.props.endColIndex}
@@ -962,6 +967,7 @@ class FixedDataTable extends React.Component {
   ) /*object*/ => {
     const { scrollEnabledY } = scrollbarsVisible(this.props);
     const props = this.props;
+   
     return (
       <FixedDataTableBufferedRows
         ariaRowIndexOffset={ariaRowIndexOffset}
@@ -999,6 +1005,8 @@ class FixedDataTable extends React.Component {
         width={props.tableSize.width}
         rowsToRender={props.rows}
         colsToRender={props.cols}
+        fixedColsToRender={props.fixedCols}
+        fixedRightColsToRender={props.fixedRightCols}
         rowOffsets={props.rowOffsets}
         showScrollbarY={scrollEnabledY}
         colOffsets={props.colOffsets}
@@ -1052,7 +1060,7 @@ class FixedDataTable extends React.Component {
       //NOTE (asif) This is a hacky workaround to prevent FDT from setting its internal state
       if (onHorizontalScroll ? onHorizontalScroll(roundedX) : true) {
         scrollActions.scrollToX(roundedX);
-      //  console.log(roundedX)
+    
       }
     }
   };

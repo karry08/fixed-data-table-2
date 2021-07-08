@@ -88,7 +88,7 @@
    colSettings,
    fixedContentWidth
  ) {
-  // console.log(colSettings)
+ 
    const {
      cellGroupWrapperHeight,
      footerHeight,
@@ -103,10 +103,9 @@
    const { height, maxHeight, useMaxHeight, width } = tableSize;
    const maxComponentHeight = Math.round(useMaxHeight ? maxHeight : height);
    const roughAvailableHeight = maxComponentHeight - reservedHeight;
-   //console.log(state)
-  // var roughAvailableWidth=0;
+  
    var fixedWidth=0;
- //  console.log(columnProps)
+ 
    for(var i=0;i<columnProps.length;i++){
      if(columnProps[i].fixed || columnProps[i].fixedRight){
        fixedWidth+=columnProps[i].width;
@@ -114,7 +113,7 @@
    }
    const roughAvailableWidth=Math.max(0,width- fixedWidth);
    
-  // console.log(2)
+  
    const scrollStateX = getScrollStateX(
      columnProps,
      scrollFlags,
@@ -148,7 +147,6 @@
        break;
      }
    }
- //console.log("min max",minAvailableHeight,maxAvailableWidth,roughAvailableHeight,reservedHeight,height)
 
    return {
      bufferRowCount: getBufferRowCount(maxAvailableHeight, rowSettings),
@@ -200,7 +198,6 @@
  function getBufferRowCount(maxAvailableHeight, rowSettings) {
    const { bufferRowCount, rowHeight, subRowHeight } = rowSettings;
    if (bufferRowCount !== undefined) {
-    // console.log('buffer set: ' + bufferRowCount);
      return bufferRowCount;
    }
  
@@ -215,7 +212,6 @@
  function getBufferColCount(maxAvailableWidth,colSettings) {
    const { bufferColCount ,minColumn} = colSettings;
    if (bufferColCount !== undefined) {
-    // console.log('buffer set: ' + bufferRowCount);
      return bufferColCount;
    }
  

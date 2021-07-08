@@ -139,7 +139,7 @@ function columnTemplates(columnWidths, elementTemplates) {
     });
     columnContainer.width+=column.width;
     let len=columnContainer.cell.length;
-  //  console.log(len);
+  
     if(len>1){
       const prevObj=columnContainer.cell[len-2];
       columnContainer.cell[len-1].offset=prevObj.props.width+prevObj.offset;
@@ -148,7 +148,7 @@ function columnTemplates(columnWidths, elementTemplates) {
     }
   
   });
- // console.log(scrollableColumns)
+
 
   return {
     fixedColumnGroups,

@@ -12,10 +12,10 @@
  'use strict';
 
  import clamp from 'lodash/clamp';
+import { func } from 'prop-types';
  
  import roughHeightsSelector from '../selectors/roughHeights';
  import scrollbarsVisibleSelector from '../selectors/scrollbarsVisible';
-// import tableWidthsSelector from '../selectors/tableWidths';
  import tableHeightsSelector from '../selectors/tableHeights';
  import updateColWidth from './updateColWidth';
  
@@ -41,7 +41,8 @@
    const {  scrollContentWidth,scrollableColsCount } = newState;
  
   const { bodyWidth } = tableHeightsSelector(newState);
-
+  computeRenderedFixedCols(newState,bodyWidth);
+  computeRenderedFixedRightCols(newState,bodyWidth);
    const maxScrollX = scrollContentWidth - bodyWidth;
    let firstColOffset;
 
@@ -68,7 +69,7 @@
 
    let scrollX = newState.scrollX;
    if (scrollableColsCount > 0) {
-  //  scrollX = newState.colOffsets[colRange.firstViewportIdx] - firstColOffset;
+  
    }
  
    scrollX = clamp(scrollX, 0, maxScrollX);
@@ -81,6 +82,30 @@
      scrollX,
    });
  }
+ function computeRenderedFixedCols(state,bodyWidth){
+   var widthUsed=0;
+   var cols=[];
+ 
+   for(var idx=0;idx<state.fixedColumns.length;idx++){
+     cols[idx]=idx;
+     widthUsed+=state.fixedColumns[idx].width;
+     if(widthUsed>bodyWidth)break;
+     }
+     state.fixedCols=cols;
+
+ }
+ function computeRenderedFixedRightCols(state,bodyWidth){
+  var widthUsed=0;
+  var cols=[];
+  for(var idx=0;idx<state.fixedRightColumns.length;idx++){
+    cols[idx]=idx;
+    widthUsed+=state.fixedRightColumns[idx].width;
+     if(widthUsed>bodyWidth)break;
+
+  }
+  state.fixedRightCols=cols;
+}
+
  
  /**
   * Determine the range of cols to render (buffer and viewport)

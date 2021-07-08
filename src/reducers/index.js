@@ -98,6 +98,8 @@ function getInitialState() {
     colOffsets:{},
     rows: [], // rowsToRender
     cols:[],
+    fixedCols:[],
+    fixedRightCols:[],
     scrollContentHeight: 0,
     scrollContentWidth: 0,
     fixedContentWidth:0,
@@ -109,6 +111,8 @@ function getInitialState() {
     scrollingX:false,
     minColumn:-1,
     scrollableColumns:[],
+    fixedColumns:[],
+    fixedRightColumns:[],
     scrollableColsCount:0,
 
 
@@ -141,7 +145,7 @@ const slice = createSlice({
       const scrollAnchorX=getScrollAnchorX(newState,props);
       newState = computeRenderedRows(newState, scrollAnchor);
       newState=computeRenderedCols(newState,scrollAnchorX);
-   
+      
       return columnStateHelper.initialize(newState, props, {});
     },
     propChange(state, action) {
@@ -170,6 +174,7 @@ const slice = createSlice({
         newState = computeRenderedRows(newState, scrollAnchor);
         newState = computeRenderedCols(newState, scrollAnchorX);
       }
+      
       else if(scrollAnchor.changed){
         newState = computeRenderedRows(newState, scrollAnchor);
       }
@@ -246,7 +251,7 @@ function initializeRowHeightsAndOffsets(state) {
   });
 }
 function initializeColWidthsAndOffsets(state) {
-  //state.checking +=1;
+ 
   
   const { columnProps } = state;
   var {colSettings}=state;
@@ -258,9 +263,16 @@ function initializeColWidthsAndOffsets(state) {
   const storedWidths = [];
   let minColumn=-1;
   var scrollableColumns=[];
+  var fixedColumns=[];
+  var fixedRightColumns=[];
   for (let idx = 0; idx < colsCount; idx++) {
-    
-   if(!(columnProps[idx].fixed || columnProps[idx].fixedRight)){
+    if(columnProps[idx].fixed){
+      fixedColumns.push(columnProps[idx]);
+    }
+    else if(columnProps[idx].fixedRight){
+      fixedRightColumns.push(columnProps[idx]);
+    }
+   else{
     scrollableColsCount++;
     storedWidths.push(columnProps[idx].width);
 
@@ -288,6 +300,8 @@ function initializeColWidthsAndOffsets(state) {
     minColumn,
     scrollableColsCount,
     scrollableColumns,
+    fixedColumns,
+    fixedRightColumns,
     colSettings,
     colsCount
   });
@@ -332,7 +346,7 @@ function setStateFromProps(state, props) {
     props.subRowHeightGetter || (() => subRowHeight || 0);
   newState.rowSettings.rowAttributesGetter = props.rowAttributesGetter;
 
- // 
+ 
   newState.scrollFlags = Object.assign({}, newState.scrollFlags,
     pick(props, ['overflowX', 'overflowY', 'showScrollbarX', 'showScrollbarY']));
 
