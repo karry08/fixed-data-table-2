@@ -29,7 +29,7 @@
   
   // const colIdx=state.colMaptoIdx[key];
    const oldWidth = storedWidths[colIdx];
-   const newWidth=storedWidths[colIdx];
+   const newWidth=state.scrollableColumns[colIdx].width;
   // const newWidth = state.columnResizingData.width || oldWidth;
    if (newWidth !== oldWidth) {
      state.colOffsetIntervalTree.set(colIdx, newWidth);

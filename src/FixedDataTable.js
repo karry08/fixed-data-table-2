@@ -1140,7 +1140,7 @@ class FixedDataTable extends React.Component {
 
     // only call onScrollStart if scrolling wasn't on previously
     if (!this.props.scrolling && onScrollStart) {
-      onScrollStart(oldScrollX, oldScrollY, oldFirstRowIndex, oldEndRowIndex, oldEndRowIndex,oldFirstColIndex, oldEndColIndex);
+      onScrollStart(oldScrollX, oldScrollY, oldFirstRowIndex, oldEndRowIndex);
     }
 
     if (scrollXChanged && onHorizontalScroll) {

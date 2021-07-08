@@ -12,7 +12,6 @@
  'use strict';
 
  import clamp from 'lodash/clamp';
-import { func } from 'prop-types';
  
  import roughHeightsSelector from '../selectors/roughHeights';
  import scrollbarsVisibleSelector from '../selectors/scrollbarsVisible';
@@ -174,7 +173,7 @@ import { func } from 'prop-types';
      colIdx >= 0 &&
      totalWidth < maxAvailableWidth
    ) {
-     totalWidth += state.scrollableColumns[colIdx].width;
+     totalWidth += updateColWidth(state,colIdx);
      endIdx = colIdx;
      colIdx += step;
    }
@@ -195,7 +194,7 @@ import { func } from 'prop-types';
 
      while (colIdx >= 0 && totalWidth < maxAvailableWidth) {
      
-       totalWidth +=  state.scrollableColumns[colIdx].width;
+       totalWidth += updateColWidth(state,colIdx);
        startIdx = colIdx;
        --colIdx;
      }
@@ -222,13 +221,13 @@ import { func } from 'prop-types';
      // NOTE (jordan): The first offset should always be 0 when lastIndex is defined
      // since we don't currently support scrolling the last col into view with an offset.
      firstOffset = firstOffset + Math.min(availableWidth - totalWidth, 0);
- 
+    
      // Handle a case where the offset puts the first col fully offscreen
      // This can happen if availableWidth & maxAvailableWidth are different
      const { storedWidths } = state;
-     if (-1 * firstOffset >= state.scrollableColumns[firstViewportIdx].width) {
+     if (-1 * firstOffset >= storedWidths[firstViewportIdx]) {
        firstViewportIdx += 1;
-       firstOffset += state.scrollableColumns[firstViewportIdx].width;
+       firstOffset += storedWidths[firstViewportIdx];
      }
    }
  
@@ -282,12 +281,12 @@ import { func } from 'prop-types';
    const colOffsets = {}; // state.colOffsets
  
    // incremental way for calculating colOffset
-   let runningOffset = state.scrollableColumns[startIdx].widthTill-state.scrollableColumns[startIdx].width;
+   let runningOffset = colOffsetIntervalTree.sumUntil(startIdx);
  
    // compute col index and offsets for every cols inside the buffer
    for (let colIdx = startIdx; colIdx < endIdx; colIdx++) {
     colOffsets[colIdx] = runningOffset;
-    runningOffset += state.scrollableColumns[colIdx].width;
+    runningOffset += storedWidths[colIdx];
     
      
      // Update the offset for rendering the col

@@ -67,7 +67,7 @@ function getInitialState() {
       colWidth: 0,
       colWidthGetter: () => 0,
       colsCount: 0,
-     minColumn:50
+     minColumn:0
     },
     scrollFlags: {
       overflowX: 'auto',
@@ -109,7 +109,6 @@ function getInitialState() {
     scrollbarYWidth: Scrollbar.SIZE,
     scrolling: false,
     scrollingX:false,
-    minColumn:-1,
     scrollableColumns:[],
     fixedColumns:[],
     fixedRightColumns:[],
@@ -256,37 +255,25 @@ function initializeColWidthsAndOffsets(state) {
   const { columnProps } = state;
   var {colSettings}=state;
   const colsCount= columnProps.length;
-  var scrollableColsCount=0;;
+  
   
  
   let scrollContentWidth =0;
   const storedWidths = [];
   let minColumn=-1;
-  var scrollableColumns=[];
-  var fixedColumns=[];
-  var fixedRightColumns=[];
+  
   for (let idx = 0; idx < colsCount; idx++) {
     if(columnProps[idx].fixed){
-      fixedColumns.push(columnProps[idx]);
     }
     else if(columnProps[idx].fixedRight){
-      fixedRightColumns.push(columnProps[idx]);
     }
    else{
-    scrollableColsCount++;
     storedWidths.push(columnProps[idx].width);
 
     if(minColumn==-1)minColumn=columnProps[idx].width;
     minColumn=Math.min(minColumn,columnProps[idx].width);
-   scrollContentWidth+=columnProps[idx].width;
-
-     var widthTill=columnProps[idx].width;
-     if(scrollableColumns.length){
-       widthTill+=scrollableColumns[scrollableColumns.length-1].widthTill;
-     }
-     columnProps[idx].widthTill=widthTill;
-     scrollableColumns.push(columnProps[idx]);
-    
+   
+    scrollContentWidth+=columnProps[idx].width; 
 
   }
   }
@@ -297,13 +284,7 @@ function initializeColWidthsAndOffsets(state) {
    colOffsetIntervalTree,
     scrollContentWidth,
     storedWidths,
-    minColumn,
-    scrollableColsCount,
-    scrollableColumns,
-    fixedColumns,
-    fixedRightColumns,
-    colSettings,
-    colsCount
+    colSettings:{...colSettings,minColumn:minColumn}
   });
 }
 
@@ -327,10 +308,32 @@ function setStateFromProps(state, props) {
       fixedContentWidth+=columnProps[i].width;
     }
   }
+
+  
+
   var newState = Object.assign({}, state,
     { columnGroupProps, columnProps, elementTemplates,colsCount,fixedContentWidth });
  
-    
+    var scrollableColumns=[];
+    var fixedColumns=[];
+    var fixedRightColumns=[];
+    for (let idx = 0; idx < colsCount; idx++) {
+      if(columnProps[idx].fixed){
+        fixedColumns.push(columnProps[idx]);
+      }
+      else if(columnProps[idx].fixedRight){
+        fixedRightColumns.push(columnProps[idx]);
+      }
+     else{
+       scrollableColumns.push(columnProps[idx]);
+    }
+  }
+  newState= Object.assign({}, newState, {
+     scrollableColumns,
+     fixedColumns,
+     fixedRightColumns,
+   });
+
   newState.elementHeights = Object.assign({}, newState.elementHeights,
     pick(props, ['cellGroupWrapperHeight', 'footerHeight', 'groupHeaderHeight', 'headerHeight']));
   if (!useGroupHeader) {

@@ -20,7 +20,6 @@ import joinClasses from './vendor_upstream/core/joinClasses';
 
 import { sumPropWidths } from './helper/widthHelper';
 import FixedDataTableCellGroup from './FixedDataTableCellGroup';
-//import FixedDataTableCellGroupFixed from './FixedDataTableCellGroupFixed';
 import FixedDataTableTranslateDOMPosition from './FixedDataTableTranslateDOMPosition';
 
 // .fixedDataTableLayout/header border-bottom-width
@@ -292,7 +291,6 @@ class FixedDataTableRowImpl extends React.Component {
         }
         zIndex={0}
         columns={this.props.scrollableColumns}
-        fixedColumnsCount={this.props.fixedColumns.length}
         touchEnabled={this.props.touchEnabled}
         onColumnResizeEndCallback={this.props.onColumnResizeEndCallback}
         onColumnReorderEndCallback={this.props.onColumnReorderEndCallback}

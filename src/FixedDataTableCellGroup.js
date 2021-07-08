@@ -206,11 +206,7 @@ class FixedDataTableCellGroupImpl extends React.Component {
         [columnProps.columnKey],
         columnProps.allowCellsRecycling
       );
- //     if (
-   //     !recyclable 
-        
-     // ) {
-      //  var key = columnProps.columnKey || 'cell_' + i;
+ 
         this._staticCells[i] = this._renderCell(
           props.rowIndex,
           props.rowHeight,
