@@ -55,7 +55,7 @@ class ResizeExample extends React.Component {
             </Plugins.ResizeCell>
           }
           cell={<TextCell data={dataList} />}
-        //  fixed={true}
+          fixed={true}
           width={columnWidths.firstName}
         />
         <Column
