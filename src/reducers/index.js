@@ -96,12 +96,16 @@ function getInitialState() {
     maxScrollY: 0,
     rowOffsets: {},
     colOffsets:{},
+    fixedColOffsets:{},
+    fixedRightColOffsets:{},
     rows: [], // rowsToRender
     cols:[],
     fixedCols:[],
     fixedRightCols:[],
     scrollContentHeight: 0,
     scrollContentWidth: 0,
+    fixedColumnsWidth:0,
+    fixedRightColumnsWidth:0,
     fixedContentWidth:0,
     scrollX: 0,
     scrollbarXHeight: Scrollbar.SIZE,
@@ -258,14 +262,18 @@ function initializeColWidthsAndOffsets(state) {
   
   
  
-  let scrollContentWidth =0;
+  var scrollContentWidth =0;
+  var fixedColumnsWidth=0;
+  var fixedRightColumnsWidth=0;
   const storedWidths = [];
   let minColumn=-1;
   
   for (let idx = 0; idx < colsCount; idx++) {
     if(columnProps[idx].fixed){
+      fixedColumnsWidth+=columnProps[idx].width;
     }
     else if(columnProps[idx].fixedRight){
+      fixedRightColumnsWidth+=columnProps[idx].width;
     }
    else{
     storedWidths.push(columnProps[idx].width);
@@ -283,6 +291,8 @@ function initializeColWidthsAndOffsets(state) {
   return Object.assign({}, state, {
    colOffsetIntervalTree,
     scrollContentWidth,
+    fixedColumnsWidth,
+    fixedRightColumnsWidth,
     storedWidths,
     colSettings:{...colSettings,minColumn:minColumn}
   });
@@ -362,7 +372,7 @@ function setStateFromProps(state, props) {
   newState.scrollbarYWidth = props.scrollbarYWidth;
  
   return {...newState, colSettings:{...newState.colSettings,colsCount:colsCount}}
-  return newState;
+  
 }
 
 const { reducer, actions } = slice

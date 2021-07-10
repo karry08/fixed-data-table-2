@@ -173,7 +173,7 @@ class FixedDataTableCellGroupImpl extends React.Component {
     
     var isScrolling=props.isScrolling;
    
-    var contentWidth = columns.length && (columns[columns.length-1].offset+ columns[columns.length-1].props.width);
+    var contentWidth = this.props.contentWidth;
     if (isScrolling) {
       // allow static array to grow while scrolling
       this._staticCells.length = Math.max(
@@ -185,7 +185,6 @@ class FixedDataTableCellGroupImpl extends React.Component {
       this._staticCells.length = colsToRender.length;
     }
     var currentPosition = 0;
-    const offsetColumn=this.props.fixedColumnsCount;
     for (var i = 0, j = colsToRender.length; i < j; i++) {
       var idx=colsToRender[i];
      
@@ -196,8 +195,9 @@ class FixedDataTableCellGroupImpl extends React.Component {
       }
    
     if(!(this.props.columns[idx]))continue;
+      //currentPosition=this.props.colOffsets[idx];
       currentPosition=this.props.columns[idx].offset;
- 
+      
       var columnProps =columns[idx]&& columns[idx].props;
       var cellTemplate =columns[idx]&& columns[idx].template;
  

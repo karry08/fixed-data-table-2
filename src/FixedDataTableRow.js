@@ -226,6 +226,7 @@ class FixedDataTableRowImpl extends React.Component {
         cellGroupWrapperHeight={this.props.cellGroupWrapperHeight}
         left={0}
         width={fixedColumnsWidth}
+        contentWidth={fixedColumnsWidth}
         zIndex={2}
         columns={this.props.fixedColumns}
         touchEnabled={this.props.touchEnabled}
@@ -239,6 +240,7 @@ class FixedDataTableRowImpl extends React.Component {
         scrollX={this.props.scrollLeft}
         isFixed={true}
         colsToRender={this.props.fixedColsToRender}
+        colOffsets={this.props.fixedColOffsets}
       />
     );
     var columnsLeftShadow = this._renderColumnsLeftShadow(fixedColumnsWidth);
@@ -255,6 +257,7 @@ class FixedDataTableRowImpl extends React.Component {
         cellGroupWrapperHeight={this.props.cellGroupWrapperHeight}
         offsetLeft={this.props.width - fixedRightColumnsWidth - scrollbarOffset}
         width={fixedRightColumnsWidth}
+        contentWidth={fixedRightColumnsWidth}
         zIndex={2}
         columns={this.props.fixedRightColumns}
         touchEnabled={this.props.touchEnabled}
@@ -267,6 +270,7 @@ class FixedDataTableRowImpl extends React.Component {
         isRTL={this.props.isRTL}
         scrollX={this.props.scrollLeft}
         colsToRender={this.props.fixedRightColsToRender}
+        colOffsets={this.props.fixedRightColOffsets}
       />
     );
     var fixedRightColumnsShadow = fixedRightColumnsWidth
@@ -274,7 +278,9 @@ class FixedDataTableRowImpl extends React.Component {
           this.props.width - fixedRightColumnsWidth - scrollbarOffset - 5
         )
       : null;
-    var scrollableColumns = (
+      var scrollableColumns=this.props.scrollableColumns;
+      var scrollableColumnsWidth = scrollableColumns.length && (scrollableColumns[scrollableColumns.length-1].offset+scrollableColumns[scrollableColumns.length-1].props.width);
+      var scrollableColumns = (
       <FixedDataTableCellGroup
         key="scrollable_cells"
         isScrolling={this.props.isScrolling}
@@ -289,6 +295,7 @@ class FixedDataTableRowImpl extends React.Component {
           fixedRightColumnsWidth -
           scrollbarOffset
         }
+        contentWidth={scrollableColumnsWidth}
         zIndex={0}
         columns={this.props.scrollableColumns}
         touchEnabled={this.props.touchEnabled}
@@ -583,7 +590,7 @@ class FixedDataTableRow extends React.Component {
       visibility: (rowProps.visible ? 'visible' : 'hidden'),
     };
     FixedDataTableTranslateDOMPosition(style, 0, offsetTop, this._initialRender, this.props.isRTL);
-
+    
     return (
       <div
         style={style}

@@ -142,6 +142,8 @@ class FixedDataTableContainer extends React.Component {
       'scrollJumpedY',
       'tableSize',
       'scrollContentWidth',
+      'fixedRightColumnsWidth',
+      'fixedColumnsWidth',
       'scrollLeft',
     'scrollToColumn',
     'colSettings',
@@ -151,8 +153,9 @@ class FixedDataTableContainer extends React.Component {
      'cols',
      'fixedCols',
      'fixedRightCols',
-    // 'scrollToColumn',
      'colOffsets',
+     'fixedColOffsets',
+      'fixedRightColOffsets',
      'colBufferSet',
      
     ]);

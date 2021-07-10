@@ -776,6 +776,12 @@ class FixedDataTable extends React.Component {
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
           isHeader={true}
+          colOffsets={this.props.colOffsets}
+        fixedColOffsets={this.props.fixedColOffsets}
+        fixedRightColOffsets={this.props.fixedRightColOffsets}
+          scrollableColumnsWidth={this.props.scrollContentWidth}
+          fixedColumnsWidth={this.props.fixedColumnsWidth}
+          fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
           scrollToX={this._scrollToX}
         />
       );
@@ -819,6 +825,12 @@ class FixedDataTable extends React.Component {
           colsToRender={props.cols}
         fixedColsToRender={props.fixedCols}
         fixedRightColsToRender={props.fixedRightCols}
+        colOffsets={this.props.colOffsets}
+        fixedColOffsets={this.props.fixedColOffsets}
+        fixedRightColOffsets={this.props.fixedRightColOffsets}
+        scrollableColumnsWidth={this.props.scrollContentWidth}
+          fixedColumnsWidth={this.props.fixedColumnsWidth}
+          fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
         //  offsetLeft={offsetLeft}
         />
       );
@@ -866,6 +878,11 @@ class FixedDataTable extends React.Component {
         fixedColsToRender={this.props.fixedCols}
         fixedRightColsToRender={this.props.fixedRightCols}
         colOffsets={this.props.colOffsets}
+        fixedColOffsets={this.props.fixedColOffsets}
+        fixedRightColOffsets={this.props.fixedRightColOffsets}
+        scrollableColumnsWidth={this.props.scrollContentWidth}
+        fixedColumnsWidth={this.props.fixedColumnsWidth}
+        fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
         firstViewportColIndex={this.props.firstColIndex}
         endViewportColIndex={this.props.endColIndex}
       />
@@ -1010,6 +1027,11 @@ class FixedDataTable extends React.Component {
         rowOffsets={props.rowOffsets}
         showScrollbarY={scrollEnabledY}
         colOffsets={props.colOffsets}
+        fixedColOffsets={props.fixedColOffsets}
+        fixedRightColOffsets={props.fixedRightColOffsets}
+        scrollableColumnsWidth={this.props.scrollContentWidth}
+        fixedColumnsWidth={this.props.fixedColumnsWidth}
+        fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
         scrollbarYWidth={props.scrollbarYWidth}
         isRTL={props.isRTL}
       />

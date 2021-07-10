@@ -84,25 +84,30 @@
  function computeRenderedFixedCols(state,bodyWidth){
    var widthUsed=0;
    var cols=[];
- 
+    var colOffsets={};
    for(var idx=0;idx<state.fixedColumns.length;idx++){
      cols[idx]=idx;
+     colOffsets[idx]=widthUsed;
      widthUsed+=state.fixedColumns[idx].width;
      if(widthUsed>bodyWidth)break;
      }
      state.fixedCols=cols;
+     state.fixedColOffsets=colOffsets;
 
  }
  function computeRenderedFixedRightCols(state,bodyWidth){
   var widthUsed=0;
   var cols=[];
+  var colOffsets={};
   for(var idx=0;idx<state.fixedRightColumns.length;idx++){
     cols[idx]=idx;
+    colOffsets[idx]=widthUsed;
     widthUsed+=state.fixedRightColumns[idx].width;
      if(widthUsed>bodyWidth)break;
 
   }
   state.fixedRightCols=cols;
+  state.fixedRightColOffsets=colOffsets;
 }
 
  
