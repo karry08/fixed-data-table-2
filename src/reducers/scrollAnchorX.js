@@ -32,7 +32,6 @@
   * }}
   */
  export function getScrollAnchorX(state, newProps, oldProps) {
-     let checking=state.checking;
    if (
 
      newProps.scrollToColumn !== undefined &&
@@ -74,7 +73,7 @@
   */
  export function scrollTox(state, scrollX) {
    const { availableWidth } = scrollbarsVisibleSelector(state);
-
+   const scrollableColsCount = state.scrollableColumns.length;
    const { colOffsetIntervalTree, colSettings, scrollContentWidth } = state;
    const { colsCount } = colSettings;
  
@@ -96,13 +95,13 @@
    } else if (scrollX >= scrollContentWidth - availableWidth) {
      // Scroll to the last col
      firstIndex = undefined;
-     lastIndex = colsCount - 1;
+     lastIndex = scrollableColsCount - 1;
    } else {
      // Mark the col which will appear first in the viewport
      // We use this as our "marker" when scrolling even if updating colOffsets
      // leads to it not being different from the scrollY specified
      const newColIdx = colOffsetIntervalTree.greatestLowerBound(scrollX);
-     firstIndex = clamp(newColIdx, 0, Math.max(colsCount - 1, 0));
+     firstIndex = clamp(newColIdx, 0, Math.max(scrollableColsCount - 1, 0));
  
      // Record how far into the first col we should scroll
      // firstOffset is a negative value representing how much larger scrollY is
@@ -140,7 +139,7 @@
   */
  function scrollToColX(state, colIndex) {
   const { availableWidth } = scrollbarsVisibleSelector(state);
-
+  const scrollableColsCount=state.scrollableColumns.length;
    const { colOffsetIntervalTree, colSettings, storedWidths, scrollX } = state;
    const { colsCount } = colSettings;
  
@@ -153,7 +152,7 @@
      };
    }
  
-   colIndex = clamp(colIndex, 0, Math.max(colsCount - 1, 0));
+   colIndex = clamp(colIndex, 0, Math.max(scrollableColsCount - 1, 0));
    updateColWidth(state, colIndex);
    let colBegin = colOffsetIntervalTree.sumUntil(colIndex);
    let colEnd = colBegin + storedWidths[colIndex];
