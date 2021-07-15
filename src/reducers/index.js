@@ -152,7 +152,6 @@ const slice = createSlice({
       return columnStateHelper.initialize(newState, props, {});
     },
     propChange(state, action) {
- 
       const { newProps, oldProps } = action.payload;
      
       let newState = setStateFromProps(state, newProps);
@@ -200,7 +199,6 @@ const slice = createSlice({
       return newState;
     },
     scrollEnd(state) {
- 
       const newState = Object.assign({}, state, {
         scrolling: false,
       });
@@ -220,7 +218,6 @@ const slice = createSlice({
       return computeRenderedRows(newState, scrollAnchor);
     },
     scrollToX(state, action) {
-    
       const scrollX = action.payload;
       const newState = Object.assign({}, state, {
         scrolling: true,
@@ -267,6 +264,7 @@ function initializeColWidthsAndOffsets(state) {
   var fixedRightColumnsWidth=0;
   const storedWidths = [];
   let minColumn=-1;
+  var fixedContentWidth=0;
   
   for (let idx = 0; idx < colsCount; idx++) {
     if(columnProps[idx].fixed){
@@ -285,15 +283,16 @@ function initializeColWidthsAndOffsets(state) {
 
   }
   }
+  fixedContentWidth=fixedRightColumnsWidth+fixedColumnsWidth;
 
   const colOffsetIntervalTree =new PrefixIntervalTree(storedWidths);
- 
   return Object.assign({}, state, {
    colOffsetIntervalTree,
     scrollContentWidth,
     fixedColumnsWidth,
     fixedRightColumnsWidth,
     storedWidths,
+    fixedContentWidth,
     colSettings:{...colSettings,minColumn:minColumn}
   });
 }
@@ -312,17 +311,12 @@ function setStateFromProps(state, props) {
     useGroupHeader,
   } = convertColumnElementsToData(props.children);
   const colsCount=columnProps.length;
-  var fixedContentWidth=0;
-  for(var i=0;i<colsCount;i++){
-    if(columnProps[i].fixed || columnProps[i].fixedRight){
-      fixedContentWidth+=columnProps[i].width;
-    }
-  }
+  
 
   
 
   var newState = Object.assign({}, state,
-    { columnGroupProps, columnProps, elementTemplates,colsCount,fixedContentWidth });
+    { columnGroupProps, columnProps, elementTemplates,colsCount });
  
     var scrollableColumns=[];
     var fixedColumns=[];

@@ -86,7 +86,8 @@
    scrollbarXHeight,
    scrollbarYWidth,
    colSettings,
-   fixedContentWidth
+   fixedContentWidth,
+   scrollContentWidth
  ) {
  
    const {
@@ -104,13 +105,13 @@
    const maxComponentHeight = Math.round(useMaxHeight ? maxHeight : height);
    const roughAvailableHeight = maxComponentHeight - reservedHeight;
   
-   var fixedWidth=0;
- 
+   var fixedWidth=fixedContentWidth;
+ /*
    for(var i=0;i<columnProps.length;i++){
      if(columnProps[i].fixed || columnProps[i].fixedRight){
        fixedWidth+=columnProps[i].width;
      }
-   }
+   }*/
    const roughAvailableWidth=Math.max(0,width- fixedWidth);
    
   
@@ -118,7 +119,9 @@
      columnProps,
      scrollFlags,
      width,
-     scrollbarYWidth
+     scrollbarYWidth,
+     fixedContentWidth,
+     scrollContentWidth
    );
    
  
@@ -171,9 +174,11 @@
   * @param {number} width
   * @return {ScrollbarState}
   */
- function getScrollStateX(columnProps, scrollFlags, width, scrollbarYWidth) {
+ function getScrollStateX(columnProps, scrollFlags, width, scrollbarYWidth,fixedContentWidth,scrollContentWidth) {
    const { overflowX, showScrollbarX } = scrollFlags;
-   const minColWidth = getTotalWidth(columnProps);
+ 
+    var minColWidth=scrollContentWidth+fixedContentWidth;
+  
    if (overflowX === 'hidden' || showScrollbarX === false) {
      return ScrollbarState.HIDDEN;
    } else if (minColWidth > width) {
@@ -236,7 +241,8 @@
      state => state.scrollbarXHeight,
      state => state.scrollbarYWidth,
      state => state.colSettings,
-     state => state.fixedContentWidth
+     state => state.fixedContentWidth,
+     state => state.scrollContentWidth
     
    ],
    roughHeights

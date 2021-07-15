@@ -822,9 +822,9 @@ class FixedDataTable extends React.Component {
           showScrollbarY={scrollEnabledY}
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
-          colsToRender={props.cols}
-        fixedColsToRender={props.fixedCols}
-        fixedRightColsToRender={props.fixedRightCols}
+          colsToRender={this.props.cols}
+        fixedColsToRender={this.props.fixedCols}
+        fixedRightColsToRender={this.props.fixedRightCols}
         colOffsets={this.props.colOffsets}
         fixedColOffsets={this.props.fixedColOffsets}
         fixedRightColOffsets={this.props.fixedRightColOffsets}
