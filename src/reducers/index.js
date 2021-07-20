@@ -186,8 +186,8 @@ const slice = createSlice({
        newState = computeRenderedCols(newState, scrollAnchorX);
       }
    
-      newState = columnStateHelper.initialize(newState, newProps, oldProps);
-
+     newState = columnStateHelper.initialize(newState, newProps, oldProps);
+   
       // if scroll values have changed, then we're scrolling!
       if (newState.scrollX !== state.scrollX || newState.scrollY !== state.scrollY) {
         newState.scrolling = newState.scrolling || true;
@@ -222,10 +222,9 @@ const slice = createSlice({
     scrollToX(state, action) {
       const scrollX = action.payload;
       const newState = Object.assign({}, state, {
-        scrolling: true,
-        scrollX
+        scrolling: true
       });
-      const scrollAnchorX=scrollTox(newState,scrollX);
+      const scrollAnchorX=scrollTox(newState,scrollX);  
       return computeRenderedCols(newState,scrollAnchorX);
     }
   }

@@ -66,13 +66,13 @@
  
    computeRenderedColOffsets(newState, colRange, state.scrolling);
 
-   let scrollX = newState.scrollX;
+   let scrollX = 0;
    if (scrollableColsCount > 0) {
-  
+      scrollX=newState.colOffsets[colRange.firstViewportIdx] -firstColOffset
    }
  
    scrollX = clamp(scrollX, 0, maxScrollX);
- 
+
    return Object.assign(newState, {
      firstColIndex,
      firstColOffset,
@@ -224,7 +224,7 @@
    const endViewportIdx = Math.max(startIdx, endIdx) + 1;
    const endBufferIdx = Math.min(endViewportIdx + bufferColCount, scrollableColsCount);
    for (colIdx = endViewportIdx; colIdx < endBufferIdx; colIdx++) {
-   updateColWidth(state, colIdx);
+   //updateColWidth(state, colIdx);
    }
  
    const { availableWidth } = scrollbarsVisibleSelector(state);
@@ -243,7 +243,7 @@
        firstOffset += storedWidths[firstViewportIdx];
      }
    }
- 
+
    return {
      endBufferIdx,
      endViewportIdx,
