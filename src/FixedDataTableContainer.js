@@ -159,6 +159,12 @@ class FixedDataTableContainer extends React.Component {
      'fixedColOffsets',
       'fixedRightColOffsets',
      'colBufferSet',
+     'fixedColumnGroups',
+    'fixedColumns',
+    'fixedRightColumnGroups',
+    'fixedRightColumns',
+    'scrollableColumnGroups',
+    'scrollableColumns',
      
     ]);
    

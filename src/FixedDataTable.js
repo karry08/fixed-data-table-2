@@ -708,7 +708,7 @@ class FixedDataTable extends React.Component {
       fixedRightColumns,
       scrollableColumnGroups,
       scrollableColumns,
-    } = columnTemplatesSelector(this.props);
+    } = this.props;
 
     const {
       bodyHeight,
@@ -777,8 +777,8 @@ class FixedDataTable extends React.Component {
           isRTL={this.props.isRTL}
           isHeader={true}
           colOffsets={this.props.colOffsets}
-        fixedColOffsets={this.props.fixedColOffsets}
-        fixedRightColOffsets={this.props.fixedRightColOffsets}
+          fixedColOffsets={this.props.fixedColOffsets}
+          fixedRightColOffsets={this.props.fixedRightColOffsets}
           scrollableColumnsWidth={this.props.scrollContentWidth}
           fixedColumnsWidth={this.props.fixedColumnsWidth}
           fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}

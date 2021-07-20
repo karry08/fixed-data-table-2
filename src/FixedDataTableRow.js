@@ -217,7 +217,7 @@ class FixedDataTableRowImpl extends React.Component {
       'public/fixedDataTableRow/even': this.props.index % 2 === 0,
     });
     var fixedColumns=this.props.fixedColumns;
-    var fixedColumnsWidth = fixedColumns.length && (fixedColumns[fixedColumns.length-1].offset+fixedColumns[fixedColumns.length-1].props.width);
+    var fixedColumnsWidth = this.props.fixedColumnsWidth;
     var fixedColumns = (
       <FixedDataTableCellGroup
         key="fixed_cells"
@@ -245,7 +245,7 @@ class FixedDataTableRowImpl extends React.Component {
     );
     var columnsLeftShadow = this._renderColumnsLeftShadow(fixedColumnsWidth);
     var fixedRightColumns=this.props.fixedRightColumns;
-    var fixedRightColumnsWidth = fixedRightColumns.length && (fixedRightColumns[fixedRightColumns.length-1].offset+fixedRightColumns[fixedRightColumns.length-1].props.width);
+    var fixedRightColumnsWidth = this.props.fixedRightColumnsWidth;
     var scrollbarOffset = this.props.showScrollbarY
       ? this.props.scrollbarYWidth
       : 0;
@@ -279,7 +279,7 @@ class FixedDataTableRowImpl extends React.Component {
         )
       : null;
       var scrollableColumns=this.props.scrollableColumns;
-      var scrollableColumnsWidth = scrollableColumns.length && (scrollableColumns[scrollableColumns.length-1].offset+scrollableColumns[scrollableColumns.length-1].props.width);
+      var scrollableColumnsWidth = this.props.scrollableColumnsWidth;
       var scrollableColumns = (
       <FixedDataTableCellGroup
         key="scrollable_cells"
@@ -315,7 +315,6 @@ class FixedDataTableRowImpl extends React.Component {
         endViewportColIndex={this.props.endViewportColIndex}
       />
     );
-    var scrollableColumnsWidth = sumPropWidths(this.props.scrollableColumns);
     var columnsRightShadow = this._renderColumnsRightShadow(
       fixedColumnsWidth + scrollableColumnsWidth
     );

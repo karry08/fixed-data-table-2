@@ -194,9 +194,8 @@ class FixedDataTableCellGroupImpl extends React.Component {
    
       }
    
-    if(!(this.props.columns[idx]))continue;
-      //currentPosition=this.props.colOffsets[idx];
-      currentPosition=this.props.columns[idx].offset;
+    if(!(this.props.colOffsets[idx]==0 || this.props.colOffsets[idx]) )continue;
+      currentPosition=this.props.colOffsets[idx];
       
       var columnProps =columns[idx]&& columns[idx].props;
       var cellTemplate =columns[idx]&& columns[idx].template;

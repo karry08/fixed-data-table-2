@@ -26,6 +26,8 @@ import computeRenderedRows from './computeRenderedRows';
 import Scrollbar from '../plugins/Scrollbar';
 import { createSlice } from '@reduxjs/toolkit';
 import computeRenderedCols from './computeRenderedCols';
+import clamp from 'lodash/clamp';
+
 
 /**
  * Returns the default initial state for the redux store.
@@ -153,9 +155,9 @@ const slice = createSlice({
     },
     propChange(state, action) {
       const { newProps, oldProps } = action.payload;
-     
+      
       let newState = setStateFromProps(state, newProps);
-    
+     
       if (oldProps.rowsCount !== newProps.rowsCount ||
         oldProps.rowHeight !== newProps.rowHeight ||
         oldProps.subRowHeight !== newProps.subRowHeight) {
@@ -265,24 +267,22 @@ function initializeColWidthsAndOffsets(state) {
   const storedWidths = [];
   let minColumn=-1;
   var fixedContentWidth=0;
-  
-  for (let idx = 0; idx < colsCount; idx++) {
-    if(columnProps[idx].fixed){
-      fixedColumnsWidth+=columnProps[idx].width;
-    }
-    else if(columnProps[idx].fixedRight){
-      fixedRightColumnsWidth+=columnProps[idx].width;
-    }
-   else{
-    storedWidths.push(columnProps[idx].width);
+  for (var idx =0;idx<state.scrollableColumns.cell.length;idx++){
+    var width=state.scrollableColumns.cell[idx].props.width;
+    storedWidths.push(width);
 
-    if(minColumn==-1)minColumn=columnProps[idx].width;
-    minColumn=Math.min(minColumn,columnProps[idx].width);
+    if(minColumn==-1)minColumn=width;
+    minColumn=Math.min(minColumn,width);
    
-    scrollContentWidth+=columnProps[idx].width; 
-
+    scrollContentWidth+=width; 
   }
+  for (var idx =0;idx<state.fixedColumns.cell.length;idx++){
+    fixedColumnsWidth+=state.fixedColumns.cell[idx].props.width;
   }
+  for (var idx =0;idx<state.fixedRightColumns.cell.length;idx++){
+    fixedRightColumnsWidth+=state.fixedRightColumns.cell[idx].props.width;
+  }
+  
   fixedContentWidth=fixedRightColumnsWidth+fixedColumnsWidth;
 
   const colOffsetIntervalTree =new PrefixIntervalTree(storedWidths);
@@ -317,26 +317,7 @@ function setStateFromProps(state, props) {
 
   var newState = Object.assign({}, state,
     { columnGroupProps, columnProps, elementTemplates,colsCount });
- 
-    var scrollableColumns=[];
-    var fixedColumns=[];
-    var fixedRightColumns=[];
-    for (let idx = 0; idx < colsCount; idx++) {
-      if(columnProps[idx].fixed){
-        fixedColumns.push(columnProps[idx]);
-      }
-      else if(columnProps[idx].fixedRight){
-        fixedRightColumns.push(columnProps[idx]);
-      }
-     else{
-       scrollableColumns.push(columnProps[idx]);
-    }
-  }
-  newState= Object.assign({}, newState, {
-     scrollableColumns,
-     fixedColumns,
-     fixedRightColumns,
-   });
+
 
   newState.elementHeights = Object.assign({}, newState.elementHeights,
     pick(props, ['cellGroupWrapperHeight', 'footerHeight', 'groupHeaderHeight', 'headerHeight']));
@@ -364,6 +345,22 @@ function setStateFromProps(state, props) {
 
   newState.scrollbarXHeight = props.scrollbarXHeight;
   newState.scrollbarYWidth = props.scrollbarYWidth;
+  var {
+    fixedColumnGroups,
+    fixedColumns,
+    fixedRightColumnGroups,
+    fixedRightColumns,
+    scrollableColumnGroups,
+    scrollableColumns,
+  } = columnTemplates(newState);
+  newState= Object.assign({}, newState, {
+    fixedColumnGroups,
+    fixedColumns,
+    fixedRightColumnGroups,
+    fixedRightColumns,
+    scrollableColumnGroups,
+    scrollableColumns,
+  });
  
   return {...newState, colSettings:{...newState.colSettings,colsCount:colsCount}}
   
