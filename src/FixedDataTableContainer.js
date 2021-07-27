@@ -124,7 +124,6 @@ class FixedDataTableContainer extends React.Component {
       'columnReorderingData',
       'columnResizingData',
       'elementHeights',
-      'elementTemplates',
       'firstRowIndex',
       'endRowIndex',
       'isColumnReordering',
@@ -150,6 +149,7 @@ class FixedDataTableContainer extends React.Component {
     'scrollToColumn',
     'colSettings',
     'firstColIndex',
+    'firstBufferIdx',
      'firstColOffset',
      'endColIndex',
      'cols',
@@ -164,7 +164,7 @@ class FixedDataTableContainer extends React.Component {
     'fixedRightColumnGroups',
     'fixedRightColumns',
     'scrollableColumnGroups',
-    'scrollableColumns',
+    'bufferScrollableColumns',
      
     ]);
    

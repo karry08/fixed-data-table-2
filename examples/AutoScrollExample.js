@@ -26,7 +26,7 @@ class AutoScrollExample extends React.Component {
     const cellRenderer = ({ columnKey, rowIndex }) =>
       (<div className='autoScrollCell'> {rowIndex}, {columnKey} </div>);
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10000; i++) {
       this.columns[i] = (
         <Column
           key={i}
@@ -101,21 +101,23 @@ class AutoScrollExample extends React.Component {
         onVerticalScroll={this.onVerticalScroll}
         onHorizontalScroll={this.onHorizontalScroll}
         {...this.props}
-      >
-        <Column
+        fixedColumns={[<Column
           columnKey="avatar"
           cell={<ImageCell data={dataList} />}
           fixed={true}
           width={50}
-        />
-        <Column
+        />]}
+        fixedRightColumns={[
+          <Column
           columnKey="firstName"
           header={<DataCell>First Name</DataCell>}
           cell={<LinkCell data={dataList} />}
-          fixed={true}
+          fixedRight={true}
           width={100}
-        />
-        {this.columns}
+        />]
+        }
+        scrollableColumns={this.columns}
+      >
       </Table>
     );
   }

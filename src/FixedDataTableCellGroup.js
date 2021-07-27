@@ -153,7 +153,7 @@ class FixedDataTableCellGroupImpl extends React.Component {
             this._staticCells[i] && this._staticCells[i].props.index;
     
         }
-        
+        idx-=this.props.firstBufferIdx;
         const key = columns[idx].props.columnKey || 'cell_' + idx;
         cellGroupColumnWidths.keys.push(key);
         cellGroupColumnWidths.widths.push(columns[idx].props.width);
@@ -167,6 +167,7 @@ class FixedDataTableCellGroupImpl extends React.Component {
 
 
   render() /*object*/ {
+    //console.log( this.props.firstBufferIdx)
     var props = this.props;
     var columns = props.columns;
     var colsToRender=props.colsToRender || [];
@@ -193,12 +194,14 @@ class FixedDataTableCellGroupImpl extends React.Component {
           this._staticCells[i] && this._staticCells[i].props.index;
    
       }
-   
+   //   console.log(this.props.firstBufferIdx)
+      if(  idx<this.props.firstBufferIdx)continue;
+    
     if(!(this.props.colOffsets[idx]==0 || this.props.colOffsets[idx]) )continue;
       currentPosition=this.props.colOffsets[idx];
       
-      var columnProps =columns[idx]&& columns[idx].props;
-      var cellTemplate =columns[idx]&& columns[idx].template;
+      var columnProps =columns[idx-this.props.firstBufferIdx]&& columns[idx-this.props.firstBufferIdx].props;
+      var cellTemplate =columns[idx-this.props.firstBufferIdx]&& columns[idx-this.props.firstBufferIdx].template;
  
       var recyclable =columnProps&& _.get(
         this.state.isCellRecyclableByColumnId,
@@ -354,11 +357,12 @@ class FixedDataTableCellGroup extends React.Component {
 
   shouldComponentUpdate(/*object*/ nextProps) /*boolean*/ {
     /// if offsets haven't changed for the same cell group while scrolling, then skip update
+    
     return !(
       nextProps.isScrolling &&
       this.props.rowIndex === nextProps.rowIndex &&
       this.props.left === nextProps.left &&
-      this.props.offsetLeft === nextProps.offsetLeft
+      this.props.offsetLeft === nextProps.offsetLeft 
     );
   }
 
@@ -386,7 +390,7 @@ class FixedDataTableCellGroup extends React.Component {
         style={style}
         className={cx('fixedDataTableCellGroupLayout/cellGroupWrapper')}
       >
-        <FixedDataTableCellGroupImpl {...props} offsetLeft={this.props.offsetLeft} />
+        <FixedDataTableCellGroupImpl {...props} offsetLeft={this.props.offsetLeft} firstBufferIdx={this.props.firstBufferIdx} />
       </div>
     );
   }

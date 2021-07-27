@@ -241,6 +241,7 @@ class FixedDataTableRowImpl extends React.Component {
         isFixed={true}
         colsToRender={this.props.fixedColsToRender}
         colOffsets={this.props.fixedColOffsets}
+        firstBufferIdx={0}
       />
     );
     var columnsLeftShadow = this._renderColumnsLeftShadow(fixedColumnsWidth);
@@ -271,6 +272,7 @@ class FixedDataTableRowImpl extends React.Component {
         scrollX={this.props.scrollLeft}
         colsToRender={this.props.fixedRightColsToRender}
         colOffsets={this.props.fixedRightColOffsets}
+        firstBufferIdx={0}
       />
     );
     var fixedRightColumnsShadow = fixedRightColumnsWidth
@@ -313,6 +315,7 @@ class FixedDataTableRowImpl extends React.Component {
         colOffsets={this.props.colOffsets}
         firstViewportColIndex={this.props.firstViewportColIndex}
         endViewportColIndex={this.props.endViewportColIndex}
+        firstBufferIdx={this.props.firstBufferIdx}
       />
     );
     var columnsRightShadow = this._renderColumnsRightShadow(
