@@ -100,7 +100,6 @@ class FixedDataTableContainer extends React.Component {
         scrollActions={this.scrollActions}
       />
     );
-  //  console.log(this.props)
     // For backward compatibility, by default we render FDT-2 scrollbars
     if (this.props.defaultScrollbars) {
       return (
@@ -120,7 +119,6 @@ class FixedDataTableContainer extends React.Component {
     const state = this.reduxStore.getState();
     const boundState = pick(state, [
       'columnGroupProps',
-      'columnProps',
       'columnReorderingData',
       'columnResizingData',
       'elementHeights',
@@ -147,24 +145,24 @@ class FixedDataTableContainer extends React.Component {
       'fixedColumnsWidth',
       'fixedContentWidth',
       'scrollLeft',
-    'scrollToColumn',
-    'colSettings',
-    'firstColIndex',
-     'firstColOffset',
-     'endColIndex',
-     'cols',
-     'fixedCols',
-     'fixedRightCols',
-     'colOffsets',
-     'fixedColOffsets',
+      'scrollToColumn',
+      'colSettings',
+      'firstColIndex',
+      'firstColOffset',
+      'endColIndex',
+      'cols',
+      'fixedCols',
+      'fixedRightCols',
+      'colOffsets',
+      'fixedColOffsets',
       'fixedRightColOffsets',
-     'colBufferSet',
-     'fixedColumnGroups',
-    'fixedColumns',
-    'fixedRightColumnGroups',
-    'fixedRightColumns',
-    'scrollableColumnGroups',
-    'scrollableColumns',
+      'colBufferSet',
+      'fixedColumnGroups',
+      'fixedColumns',
+      'fixedRightColumnGroups',
+      'fixedRightColumns',
+      'scrollableColumnGroups',
+      'scrollableColumns',
      
     ]);
    

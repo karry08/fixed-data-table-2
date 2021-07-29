@@ -823,15 +823,14 @@ class FixedDataTable extends React.Component {
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
           colsToRender={this.props.cols}
-        fixedColsToRender={this.props.fixedCols}
-        fixedRightColsToRender={this.props.fixedRightCols}
-        colOffsets={this.props.colOffsets}
-        fixedColOffsets={this.props.fixedColOffsets}
-        fixedRightColOffsets={this.props.fixedRightColOffsets}
-        scrollableColumnsWidth={this.props.scrollContentWidth}
+          fixedColsToRender={this.props.fixedCols}
+          fixedRightColsToRender={this.props.fixedRightCols}
+          colOffsets={this.props.colOffsets}
+          fixedColOffsets={this.props.fixedColOffsets}
+          fixedRightColOffsets={this.props.fixedRightColOffsets}
+          scrollableColumnsWidth={this.props.scrollContentWidth}
           fixedColumnsWidth={this.props.fixedColumnsWidth}
           fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
-        //  offsetLeft={offsetLeft}
         />
       );
     }
@@ -997,7 +996,6 @@ class FixedDataTable extends React.Component {
         endViewportColIndex={props.endColIndex}
         height={bodyHeight}
         offsetTop={offsetTop}
-  //      offsetLeft={offsetTop}
         onRowClick={props.onRowClick}
         onRowContextMenu={props.onRowContextMenu}
         onRowDoubleClick={props.onRowDoubleClick}

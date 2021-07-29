@@ -9,29 +9,12 @@
  * @providesModule FixedDataTableStore
  */
 
- 'use strict';
+'use strict';
 
- import reducers from './reducers';
- import { configureStore } from '@reduxjs/toolkit';
- 
- const store = configureStore({
-   reducer: reducers,
-   middleware: getDefaultMiddleware => getDefaultMiddleware({
-     serializableCheck: false,
-     // Todo: Have to disable immutableCheck because state has circular JSON somewhere in it. Need to investigate it.
-     immutableCheck: true
-   })
- });
- 
- 
- 
- export default {
-   get: () => configureStore({
-    reducer: reducers,
-    middleware: getDefaultMiddleware => getDefaultMiddleware({
-      serializableCheck: false,
-      // Todo: Have to disable immutableCheck because state has circular JSON somewhere in it. Need to investigate it.
-      immutableCheck: false
-    })
-  })
- };
+import { createStore } from 'redux'
+
+import reducers from './reducers'
+
+export default {
+  get: () => createStore(reducers)
+};

@@ -211,7 +211,6 @@ class FixedDataTableBufferedRows extends React.Component {
         scrollableColumnsWidth={this.props.scrollableColumnsWidth}
         fixedColumnsWidth={this.props.fixedColumnsWidth}
         fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
-        storedWidths={this.props.storedWidths}
         firstViewportColIndex={this.props.firstViewportColIndex}
         endViewportColIndex={this.props.endViewportColIndex}
       />

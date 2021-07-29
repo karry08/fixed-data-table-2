@@ -212,7 +212,8 @@ class FixedDataTableCellGroupImpl extends React.Component {
           columnProps,
           cellTemplate,
           currentPosition,
-          i,idx,
+          i,
+          idx,
           contentWidth
         );
      
@@ -298,12 +299,10 @@ class FixedDataTableCellGroupImpl extends React.Component {
         isRTL={this.props.isRTL}
         fake={fake}
         visible={visible}
-        scrollX={this.props.scrollX}
         isFixed={this.props.isFixed}
         scrollToX={this.props.scrollToX}
         toggleCellsRecycling={this.toggleCellsRecycling}
         getCellGroupWidth={this.getCellGroupWidth}
-        offsetLeft={this.props.offsetLeft}
       />
     );
   };
@@ -386,7 +385,7 @@ class FixedDataTableCellGroup extends React.Component {
         style={style}
         className={cx('fixedDataTableCellGroupLayout/cellGroupWrapper')}
       >
-        <FixedDataTableCellGroupImpl {...props} offsetLeft={this.props.offsetLeft} />
+        <FixedDataTableCellGroupImpl {...props}  />
       </div>
     );
   }

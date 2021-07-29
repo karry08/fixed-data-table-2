@@ -58,7 +58,6 @@ class AutoScrollExample extends React.Component {
     }, 16);
   }
 
-
   render() {
     return (
       <div className='autoScrollContainer'>

@@ -23,11 +23,6 @@
   * @return {number} The new col width
   */
  export default function updateColWidth(state, colIdx) {
-   //const { storedWidths } = state;
-  
- 
-  
-  // const colIdx=state.colMaptoIdx[key];
    const oldWidth = state.storedWidths[colIdx];
    var newWidth;
    if(!state.scrollableColumns.cell[colIdx].props.width){
@@ -36,7 +31,6 @@
    else {
     newWidth=state.scrollableColumns.cell[colIdx].props.width;
    }
-  // const newWidth = state.columnResizingData.width || oldWidth;
    if (newWidth !== oldWidth) {
      state.colOffsetIntervalTree.set(colIdx, newWidth);
      state.storedWidths[colIdx] = newWidth;

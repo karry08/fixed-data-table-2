@@ -180,14 +180,7 @@ exports.ExamplePages = {
     title: 'Auto Scroll',
     description: 'An example using Controlled Scrolling to mimic auto scrolling',
   },
-  MY_EXAMPLE:{
-    location:'my-example.html',
-    fileName:'MyExample.js',
-    title :'My Example',
-    description :'My Example'
-  }
 };
-
 
 Object.keys(exports.ExamplePages).forEach(
   (key) => exports.ExamplePages[key].file =
