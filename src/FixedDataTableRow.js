@@ -311,7 +311,6 @@ class FixedDataTableRowImpl extends React.Component {
         isRTL={this.props.isRTL}
         scrollToX={this.props.scrollToX}
         colsToRender={this.props.colsToRender}
-        storedWidths={this.props.storedWidths}
         colOffsets={this.props.colOffsets}
         firstViewportColIndex={this.props.firstViewportColIndex}
         endViewportColIndex={this.props.endViewportColIndex}

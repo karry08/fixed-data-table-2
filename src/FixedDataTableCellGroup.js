@@ -301,7 +301,6 @@ class FixedDataTableCellGroupImpl extends React.Component {
         isRTL={this.props.isRTL}
         fake={fake}
         visible={visible}
-        scrollX={this.props.scrollX}
         isFixed={this.props.isFixed}
         scrollToX={this.props.scrollToX}
         toggleCellsRecycling={this.toggleCellsRecycling}

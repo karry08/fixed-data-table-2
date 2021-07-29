@@ -121,7 +121,6 @@ class FixedDataTableContainer extends React.Component {
     const state = this.reduxStore.getState();
     const boundState = pick(state, [
       'columnGroupProps',
-      'columnProps',
       'columnReorderingData',
       'columnResizingData',
       'elementHeights',
@@ -159,14 +158,12 @@ class FixedDataTableContainer extends React.Component {
      'colOffsets',
      'fixedColOffsets',
       'fixedRightColOffsets',
-     'colBufferSet',
      'fixedColumnGroups',
     'fixedColumns',
     'fixedRightColumnGroups',
     'fixedRightColumns',
     'scrollableColumnGroups',
     'bufferScrollableColumns',
-    'endBufferIdx',
      
     ]);
    
