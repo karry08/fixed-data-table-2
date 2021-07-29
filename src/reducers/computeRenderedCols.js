@@ -16,6 +16,7 @@
  import roughHeightsSelector from '../selectors/roughHeights';
  import scrollbarsVisibleSelector from '../selectors/scrollbarsVisible';
  import tableHeightsSelector from '../selectors/tableHeights';
+import updateColProps from './updateColProps';
  import updateColWidth from './updateColWidth';
  
  /**
@@ -33,15 +34,15 @@
   * }} scrollAnchor
   * @return {!Object} The updated state object
   */
- export default function computeRenderedCols(state, scrollAnchor,props) {
+ export default function computeRenderedCols(state, scrollAnchor) {
    const newState = Object.assign({}, state);
    let colRange = calculateRenderedColRange(newState, scrollAnchor);
  
    const {  scrollContentWidth } = newState;
  const scrollableColsCount=newState.scrollableColumns.cell.length
   const { bodyWidth } = tableHeightsSelector(newState);
-  computeRenderedFixedCols(newState,bodyWidth,props);
-  computeRenderedFixedRightCols(newState,bodyWidth,props);
+  computeRenderedFixedCols(newState,bodyWidth);
+  computeRenderedFixedRightCols(newState,bodyWidth);
    const maxScrollX = scrollContentWidth - bodyWidth;
    let firstColOffset;
 
@@ -52,7 +53,7 @@
        colRange = calculateRenderedColRange(newState, {
          firstOffset: 0,
          lastIndex: scrollableColsCount - 1,
-       },props);
+       });
      }
  
      firstColOffset = 0;
@@ -83,19 +84,23 @@
      endBufferIdx
    });
  }
- function computeRenderedFixedCols(state,bodyWidth,props){
+ function computeRenderedFixedCols(state,bodyWidth){
    var widthUsed=0;
    var cols=[];
     var colOffsets={};
    
     if(!state.fixedColumns.cell)return;
-   for(var idx=0;idx<state.fixedColumns.cell.length;idx++){
+   for(var idx=0;idx<state.fixedColumnsCount;idx++){
      cols[idx]=idx;
      colOffsets[idx]=widthUsed;
-    if(props && props.fixedColumns)
-     widthUsed+=props.fixedColumns[idx].width;
-     else
-     widthUsed+=state.fixedColumns.cell[idx].props.width;
+     const newWidth=state.getFixedColumns(idx).width;
+     const oldWidth=state.fixedStoredWidths[idx];
+     widthUsed+=newWidth;
+     if(newWidth!=oldWidth){
+       state.fixedColumnsWidth+=newWidth-oldWidth
+       state.fixedStoredWidths[idx]=newWidth;
+       state.fixedContentWidth+=newWidth-oldWidth;
+     }
      if(widthUsed>bodyWidth)break;
      }
   
@@ -110,14 +115,19 @@
   var colOffsets={};
   
   if(!state.fixedRightColumns.cell)return;
-  for(var idx=0;idx<state.fixedRightColumns.cell.length;idx++){
+  for(var idx=0;idx<state.fixedRightColumnsCount;idx++){
     cols[idx]=idx;
     colOffsets[idx]=widthUsed;
-    if(props && props.fixedRightColumns)
-    widthUsed+=props.fixedRightColumns[idx].width;
-    else
-    widthUsed+=state.fixedRightColumns.cell[idx].props.width;
+    const newWidth=state.getFixedRightColumns(idx).width;
+     const oldWidth=state.fixedRightStoredWidths[idx];
+     widthUsed+=newWidth;
+     if(newWidth!=oldWidth){
+       state.fixedRightColumnsWidth+=newwidth-oldWidth
+       state.fixedRightStoredWidths[idx]=newwidth;
+       state.fixedContentWidth+=newwidth-oldWidth;
+     }
      if(widthUsed>bodyWidth)break;
+     
 
   }
   state.fixedRightCols=cols;
@@ -192,10 +202,8 @@
      colIdx >= 0 &&
      totalWidth < maxAvailableWidth
    ) {
-     if(props)
      totalWidth += updateColWidth(state,colIdx,props);
-     else
-     totalWidth+=state.storedWidths[colIdx]
+
      endIdx = colIdx;
      colIdx += step;
    }
@@ -215,10 +223,9 @@
      colIdx = firstIndex - 1;
 
      while (colIdx >= 0 && totalWidth < maxAvailableWidth) {
-     if(props)
+     
        totalWidth += updateColWidth(state,colIdx,props);
-       else
-       totalWidth+=state.storedWidths[colIdx]
+       
        startIdx = colIdx;
        --colIdx;
      }
@@ -228,7 +235,7 @@
    let firstViewportIdx = Math.min(startIdx, endIdx);
    const firstBufferIdx = Math.max(firstViewportIdx - bufferColCount, 0);
    for (colIdx = firstBufferIdx; colIdx < firstViewportIdx; colIdx++) {
-     if(props)
+   
      updateColWidth(state, colIdx,props);
    }
  
@@ -236,7 +243,6 @@
    const endViewportIdx = Math.max(startIdx, endIdx) + 1;
    const endBufferIdx = Math.min(endViewportIdx + bufferColCount, scrollableColsCount);
    for (colIdx = endViewportIdx; colIdx < endBufferIdx; colIdx++) {
-     if(props)
    updateColWidth(state, colIdx,props);
    }
  

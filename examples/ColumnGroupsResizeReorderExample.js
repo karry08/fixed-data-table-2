@@ -156,6 +156,12 @@ class ColumnGroupsExample extends React.Component {
         width={1000}
         height={500}
         {...this.props}
+        getFixedColumns={getFixedColumns}
+        getFixedRightColumns={getFixedRightColumns}
+        getScrollableColumns={getScrollableColumns}
+        fixedColumnsCount={1}
+        fixedRightColumnsCount={2}
+        scrollableColumnsCount={100}
       >
         {this.state.columnGroupOrder.map(function (columnGroupKey, i) {
           return (

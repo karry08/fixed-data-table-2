@@ -93,6 +93,7 @@ class FixedDataTableContainer extends React.Component {
       isRTL: this.props.isRTL,
       touchEnabled: this.props.touchEnabled,
     };
+   // console.log(this.state.bufferScrollableColumns)
     const fdt = (
       <FixedDataTable
         {...this.props}
@@ -165,6 +166,7 @@ class FixedDataTableContainer extends React.Component {
     'fixedRightColumns',
     'scrollableColumnGroups',
     'bufferScrollableColumns',
+    'endBufferIdx',
      
     ]);
    

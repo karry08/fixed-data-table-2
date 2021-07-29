@@ -5,7 +5,7 @@
 "use strict";
 
 import FakeObjectDataListStore from './helpers/FakeObjectDataListStore';
-import { ImageCell, LinkCell } from './helpers/cells';
+import { ImageCell, LinkCell ,TextCell} from './helpers/cells';
 import { Table, Column, DataCell } from 'fixed-data-table-2';
 import React from 'react';
 
@@ -14,7 +14,7 @@ class AutoScrollExample extends React.Component {
     super(props);
 
     this.state = {
-      dataList: new FakeObjectDataListStore(1000000),
+      dataList: new FakeObjectDataListStore(10000),
       scrollTop: 0,
       scrollLeft: 0,
       autoScrollEnabled: true,
@@ -23,21 +23,44 @@ class AutoScrollExample extends React.Component {
     };
 
     this.columns = [];
-    const cellRenderer = ({ columnKey, rowIndex }) =>
-      (<div className='autoScrollCell'> {rowIndex}, {columnKey} </div>);
-
-    for (let i = 0; i < 10000; i++) {
-      this.columns[i] = (
-        <Column
-          key={i}
-          columnKey={i}
-          header={<div> {i} </div>}
-          cell={cellRenderer}
-          width={100}
-          allowCellsRecycling={true}
-        />
-      )
-    }
+        this.columns1=[];
+        this.columns2=[];
+        const cellRenderer = ({ columnKey, rowIndex }) =>
+          (<div className='autoScrollCell'> {rowIndex}, {columnKey} </div>);
+    
+        for (let i = 0; i < 100000; i++) {
+          this.columns[i] = {
+              key:i,
+              columnKey:i,
+              header:<div> {i} </div>,
+              cell:cellRenderer,
+              width:100,
+              allowCellsRecycling:true
+          }
+        }
+        this.columns1[0]={
+          columnKey:"avatar",
+          cell:<ImageCell data={this.state.dataList} />,
+          fixed:true,
+          width:50
+        }
+        this.columns2=[
+          {
+          columnKey:"firstName",
+          header:<DataCell>First Name</DataCell>,
+          cell:<LinkCell data={this.state.dataList} />,
+          fixedRight:true,
+          width:100
+          },
+          {
+          columnKey:"lastName",
+          header:<DataCell>Last Name</DataCell>,
+          cell:<TextCell data={this.state.dataList} />,
+          fixedRight:true,
+          width:100
+          }
+          ]
+          
 
     this.onVerticalScroll = this.onVerticalScroll.bind(this);
     this.onHorizontalScroll = this.onHorizontalScroll.bind(this);
@@ -47,6 +70,7 @@ class AutoScrollExample extends React.Component {
   }
 
   componentDidMount() {
+    
     setInterval(() => {
       if (!this.state.autoScrollEnabled) {
         return;
@@ -89,6 +113,15 @@ class AutoScrollExample extends React.Component {
 
   renderTable() {
     var { dataList, scrollLeft, scrollTop } = this.state;
+    const getFixedColumns= (index)=>{
+      return this.columns1[index];
+    }
+    const getScrollableColumns=(index)=>{
+      return this.columns[index];
+    }
+    const getFixedRightColumns=(index)=>{
+      return this.columns2[index];
+    }
     return (
       <Table
         rowHeight={50}
@@ -101,22 +134,12 @@ class AutoScrollExample extends React.Component {
         onVerticalScroll={this.onVerticalScroll}
         onHorizontalScroll={this.onHorizontalScroll}
         {...this.props}
-        fixedColumns={[<Column
-          columnKey="avatar"
-          cell={<ImageCell data={dataList} />}
-          fixed={true}
-          width={50}
-        />]}
-        fixedRightColumns={[
-          <Column
-          columnKey="firstName"
-          header={<DataCell>First Name</DataCell>}
-          cell={<LinkCell data={dataList} />}
-          fixedRight={true}
-          width={100}
-        />]
-        }
-        scrollableColumns={this.columns}
+        getFixedColumns={getFixedColumns}
+        getFixedRightColumns={getFixedRightColumns}
+        getScrollableColumns={getScrollableColumns}
+        fixedColumnsCount={1}
+        fixedRightColumnsCount={2}
+        scrollableColumnsCount={10000}
       >
       </Table>
     );

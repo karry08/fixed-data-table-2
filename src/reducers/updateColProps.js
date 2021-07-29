@@ -10,7 +10,7 @@
  */
 
  'use strict';
-
+import { _extractTemplates,_addToColumn,_extractProps } from "./getColumnTemplates";
  /**
   * Update our cached col width for a specific index
   * based on the value from colWidthGetter
@@ -22,26 +22,22 @@
   * @param {number} colIdx
   * @return {number} The new col width
   */
- export default function updateColProps(state,props) {
-   //const { storedWidths } = state;
-  var {scrollableColumns}=state;
+ export default function updateColProps(state) {
     var bufferScrollableColumns={
         cell:[],
         header:[],
         footer:[]
     }
-    bufferScrollableColumns.cell.length=state.endBufferIdx-state.firstBufferIdx+1;
-    bufferScrollableColumns.header.length=state.endBufferIdx-state.firstBufferIdx+1;
-    bufferScrollableColumns.footer.length=state.endBufferIdx-state.firstBufferIdx+1;
- for(var idx=state.firstBufferIdx;idx<=state.endBufferIdx;idx++){
-     
-    bufferScrollableColumns.cell[idx-state.firstBufferIdx]=scrollableColumns.cell[idx]
-    bufferScrollableColumns.header[idx-state.firstBufferIdx]=scrollableColumns.header[idx]
-    bufferScrollableColumns.footer[idx-state.firstBufferIdx]=scrollableColumns.footer[idx]
     
-    // scrollableColumns.cell[idx].props.width=props.scrollableColumns[idx].width
+ for(var idx=state.firstBufferIdx;idx<state.endBufferIdx;idx++){
+   const child=state.getScrollableColumns(idx)
+   const columnProp=_extractProps(child)
+   const elementTemplates=_extractTemplates(child)
+   _addToColumn(bufferScrollableColumns,columnProp,elementTemplates)
+     
+
  }
- //console.log(1)
  return Object.assign({},state,{bufferScrollableColumns});
  }
+
  

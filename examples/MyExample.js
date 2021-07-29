@@ -17,25 +17,63 @@
           dataList: new FakeObjectDataListStore(1000000),
         };
         this.columns = [];
+        this.columns1=[];
+        this.columns2=[];
         const cellRenderer = ({ columnKey, rowIndex }) =>
           (<div className='autoScrollCell'> {rowIndex}, {columnKey} </div>);
     
-        for (let i = 0; i < 10000; i++) {
-          this.columns[i] = (
-            <Column
-              key={i}
-              columnKey={i}
-              header={<div> {i} </div>}
-              cell={cellRenderer}
-              width={100}
-              allowCellsRecycling={true}
-            />
-          )
+        for (let i = 0; i < 100000; i++) {
+          this.columns[i] = {
+              key:i,
+              columnKey:i,
+              header:<div> {i} </div>,
+              cell:cellRenderer,
+              width:100,
+              allowCellsRecycling:true
+          }
         }
+        this.columns1[0]={
+          columnKey:"avatar",
+          cell:<ImageCell data={this.state.dataList} />,
+          fixed:true,
+          width:50
+        }
+        this.columns2=[
+              
+          {
+          columnKey:"firstName",
+          header:<DataCell>First Name</DataCell>,
+          cell:<LinkCell data={this.state.dataList} />,
+          fixedRight:true,
+          width:100
+          },
+          {
+          columnKey:"lastName",
+          header:<DataCell>Last Name</DataCell>,
+          cell:<TextCell data={this.state.dataList} />,
+          fixedRight:true,
+          width:100
+          }
+        
+          ]
+          
+        
+
+        }
+
     
-      }
+      
     
       render() {
+        const getFixedColumns= (index)=>{
+          return this.columns1[index];
+        }
+        const getScrollableColumns=(index)=>{
+          return this.columns[index];
+        }
+        const getFixedRightColumns=(index)=>{
+          return this.columns2[index];
+        }
         var {dataList} = this.state;
         return (
           <Table
@@ -45,34 +83,13 @@
             width={1000}
             height={500}
             {...this.props}
-            fixedColumns={[<Column
-              columnKey="avatar"
-              cell={<ImageCell data={dataList} />}
-              fixed={true}
-              width={50}
-            />]}
-            fixedRightColumns={[
-              
-            <Column
-            columnKey="firstName"
-            header={<DataCell>First Name</DataCell>}
-            cell={<LinkCell data={dataList} />}
-            fixedRight={true}
-            width={100}
-          />,
-          <Column
-            columnKey="lastName"
-            header={<DataCell>Last Name</DataCell>}
-            cell={<TextCell data={dataList} />}
-            fixedRight={true}
-            width={100}
-          />
-          
-            ]}
-            scrollableColumns={this.columns}
+            getFixedColumns={getFixedColumns}
+            getFixedRightColumns={getFixedRightColumns}
+            getScrollableColumns={getScrollableColumns}
+            fixedColumnsCount={1}
+            fixedRightColumnsCount={2}
+            scrollableColumnsCount={100000}
             >
-           
-        
           </Table>
         );
       }

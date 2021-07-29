@@ -140,13 +140,14 @@ class FixedDataTableCell extends React.Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return true;
+  //  return true;
     if (
     this.props.visible !== nextProps.visible ||
     this.props.fake !== nextProps.fake
   ) {
     return true;
   }
+  
 
   // if col is still fake or still not visible then no need to update
   if (nextProps.fake || !nextProps.visible) {
@@ -154,17 +155,16 @@ class FixedDataTableCell extends React.Component {
   }
     
 
-    //Performance check not enabled
-    if (!nextProps.pureRendering) {
-      return true;
-    }
+  
 
     const { cell: oldCell, isScrolling: oldIsScrolling, ...oldProps } = this.props;
     const { cell: newCell, isScrolling: newIsScrolling, ...newProps } = nextProps;
-
+   // console.log(oldCell)
+    //console.log(newCell)
     if (!shallowEqual(oldProps, newProps)) {
       return true;
     }
+    
 
     if (!oldCell || !newCell || oldCell.type !== newCell.type) {
       return true;
@@ -173,6 +173,9 @@ class FixedDataTableCell extends React.Component {
     if (!shallowEqual(oldCell.props, newCell.props)) {
       return true;
     }
+    //if(oldCell.props!==newCell.props)return true;
+    
+    
 
     return false;
   }

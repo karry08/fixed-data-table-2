@@ -34,7 +34,78 @@ class ResizeExample extends React.Component {
   };
 
   render() {
+    
     var { dataList, columnWidths } = this.state;
+    const getFixedColumns= (index)=>{
+      return this.columns1[index];
+    }
+    const getScrollableColumns=(index)=>{
+      return this.columns[index];
+    }
+    const getFixedRightColumns=(index)=>{
+      return this.columns2[index];
+    }
+    this.columns = [];
+    this.columns1=[];
+    this.columns2=[];
+   
+    
+    this.columns1[0]={
+      columnKey:"firstName",
+      header:
+        <Plugins.ResizeCell
+          onColumnResizeEnd={this._onColumnResizeEndCallback}
+        >
+          First Name{' '}
+        </Plugins.ResizeCell>
+      ,
+      cell:<TextCell data={dataList} />,
+      fixed:true,
+      width:columnWidths.firstName
+    }
+    this.columns=[
+          
+      {
+        columnKey:"lastName",
+        header:
+        <Plugins.ResizeCell
+        minWidth={70}
+        maxWidth={170}
+        onColumnResizeEnd={this._onColumnResizeEndCallback}
+      >
+        Last Name (min/max constrained)
+      </Plugins.ResizeCell>
+        ,
+        cell:<TextCell data={dataList} />,
+        width:columnWidths.lastName
+      },
+      {
+        columnKey:"companyName",
+        header:<Plugins.ResizeCell
+        onColumnResizeEnd={this._onColumnResizeEndCallback}
+      >
+        Company{' '}
+      </Plugins.ResizeCell>
+        
+        ,
+        cell:<TextCell data={dataList} />,
+        width:columnWidths.companyName
+      },
+      {
+        columnKey:"sentence",
+        header:
+          <Plugins.ResizeCell
+            onColumnResizeEnd={this._onColumnResizeEndCallback}
+          >
+            Sentence {' '}
+          </Plugins.ResizeCell>
+        ,
+        cell:<TextCell data={dataList} />,
+        fixed:true,
+        width:columnWidths.sentence
+      }
+    
+      ]
     return (
       <Table
         rowHeight={30}
@@ -44,58 +115,15 @@ class ResizeExample extends React.Component {
         width={1000}
         height={500}
         {...this.props}
+        getFixedColumns={getFixedColumns}
+        getFixedRightColumns={getFixedRightColumns}
+        getScrollableColumns={getScrollableColumns}
+        fixedColumnsCount={1}
+        fixedRightColumnsCount={0}
+        scrollableColumnsCount={3}
+        
       >
-        <Column
-          columnKey="firstName"
-          header={
-            <Plugins.ResizeCell
-              onColumnResizeEnd={this._onColumnResizeEndCallback}
-            >
-              First Name{' '}
-            </Plugins.ResizeCell>
-          }
-          cell={<TextCell data={dataList} />}
-          fixed={true}
-          width={columnWidths.firstName}
-        />
-        <Column
-          columnKey="lastName"
-          header={
-            <Plugins.ResizeCell
-              minWidth={70}
-              maxWidth={170}
-              onColumnResizeEnd={this._onColumnResizeEndCallback}
-            >
-              Last Name (min/max constrained)
-            </Plugins.ResizeCell>
-          }
-          cell={<TextCell data={dataList} />}
-          width={columnWidths.lastName}
-        />
-        <Column
-          columnKey="companyName"
-          header={
-            <Plugins.ResizeCell
-              onColumnResizeEnd={this._onColumnResizeEndCallback}
-            >
-              Company{' '}
-            </Plugins.ResizeCell>
-          }
-          cell={<TextCell data={dataList} />}
-          width={columnWidths.companyName}
-        />
-        <Column
-          columnKey="sentence"
-          header={
-            <Plugins.ResizeCell
-              onColumnResizeEnd={this._onColumnResizeEndCallback}
-            >
-              Sentence{' '}
-            </Plugins.ResizeCell>
-          }
-          cell={<TextCell data={dataList} />}
-          width={columnWidths.sentence}
-        />
+       
       </Table>
     );
   }

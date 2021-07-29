@@ -16,6 +16,11 @@ class ColumnGroupsExample extends React.Component {
     this.state = {
       dataList: new FakeObjectDataListStore(1000000),
     };
+    
+    this.columns = [];
+    this.columns1=[];
+    this.columns2=[];
+    
   }
 
   render() {
@@ -29,7 +34,8 @@ class ColumnGroupsExample extends React.Component {
         rowsCount={dataList.getSize()}
         width={1000}
         height={500}
-        {...this.props}>
+        {...this.props}
+        >
         <ColumnGroup
           fixed={true}
           header={<DataCell>Name</DataCell>}>
