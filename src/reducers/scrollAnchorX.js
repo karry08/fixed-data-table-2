@@ -14,7 +14,7 @@
  import clamp from '../vendor_upstream/core/clamp';
  
  import scrollbarsVisibleSelector from '../selectors/scrollbarsVisible';
- import updateColWidth from './updateColWidth';
+ import {updateColWidth} from './updateColWidth';
  
  /**
   * Get the anchor for scrolling.

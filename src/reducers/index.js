@@ -127,6 +127,8 @@ function getInitialState() {
     fixedColumnsCount:0,
     fixedRightColumnsCount:0,
     scrollableColumnsCount:0,
+    totalFlexGrow:0,
+    widthVacant:0,
 
     /*
      * Internal state only used by this file
@@ -158,8 +160,8 @@ const slice = createSlice({
       const scrollAnchor = getScrollAnchor(newState, props);
       const scrollAnchorX=getScrollAnchorX(newState,props);
       newState = computeRenderedRows(newState, scrollAnchor);
-      newState=computeRenderedCols(newState,scrollAnchorX);
-      newState=updateColProps(newState)
+      newState=computeRenderedCols(newState,scrollAnchorX,1);
+      newState=updateColProps(newState,1)
       newState= columnStateHelper.initialize(newState, props, {});
       Object.assign(state,newState);
   //    return newState
@@ -179,7 +181,7 @@ const slice = createSlice({
         else{
           newState = setStateFromPropsChange(state, newProps);
         }
-      
+ //     console.log(newState)
       if (oldProps.rowsCount !== newProps.rowsCount ||
         oldProps.rowHeight !== newProps.rowHeight ||
         oldProps.subRowHeight !== newProps.subRowHeight) {
@@ -199,7 +201,7 @@ const slice = createSlice({
       // If anything has changed in state, update our rendered rows
       if(!shallowEqual(state, newState)){
         newState = computeRenderedRows(newState, scrollAnchor);
-        newState = computeRenderedCols(newState, scrollAnchorX);
+        newState = computeRenderedCols(newState, scrollAnchorX,1);
         newState= updateColProps(newState);
       }
       
@@ -207,7 +209,7 @@ const slice = createSlice({
         newState = computeRenderedRows(newState, scrollAnchor);
       }
       else if(scrollAnchorX.changed){
-       newState = computeRenderedCols(newState, scrollAnchorX);
+       newState = computeRenderedCols(newState, scrollAnchorX,1);
        newState= updateColProps(newState);
       }
    
@@ -224,12 +226,12 @@ const slice = createSlice({
       // alternatively shallow diff and reconcile props
      // state=newState
      //
-     newState=updateColProps(newState)
+     newState=updateColProps(newState,1)
      Object.assign(state,newState);
 
     },
     scrollEnd(state) {
-      const newState = Object.assign({}, state, {
+      var newState = Object.assign({}, state, {
         scrolling: false,
       });
       const previousScrollAnchor = {
@@ -237,6 +239,12 @@ const slice = createSlice({
         firstOffset: state.firstRowOffset,
         lastIndex: state.lastIndex,
       };
+      const previousScrollAnchorX={
+        firstIndex: state.firstColIndex,
+        firstOffset: state.firstColOffset,
+        lastIndex: state.lastIndex,
+      }
+      newState=computeRenderedCols(newState,previousScrollAnchorX,0)
       return computeRenderedRows(newState, previousScrollAnchor);
     },
     scrollToY(state, action) {
@@ -253,9 +261,9 @@ const slice = createSlice({
         scrolling: true
       });
       const scrollAnchorX=scrollTox(newState,scrollX);  
-      newState= computeRenderedCols(newState,scrollAnchorX);
+      newState= computeRenderedCols(newState,scrollAnchorX,0);
       //return newState
-      return updateColProps(newState)
+      return updateColProps(newState,0)
     }
   }
 })

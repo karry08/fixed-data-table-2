@@ -162,6 +162,7 @@ class FixedDataTableCell extends React.Component {
     
 
     if (!oldCell || !newCell || oldCell.type !== newCell.type) {
+      if(this.props.rowIndex==-1)return false
       return true;
     }
 

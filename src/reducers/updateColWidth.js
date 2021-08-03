@@ -11,6 +11,8 @@
 
  'use strict';
 
+import { func } from "prop-types";
+
  /**
   * Update our cached col width for a specific index
   * based on the value from colWidthGetter
@@ -22,18 +24,49 @@
   * @param {number} colIdx
   * @return {number} The new col width
   */
- export default function updateColWidth(state, colIdx,props) {
-   const { storedWidths, colOffsetIntervalTree,scrollContentWidth} = state;
+ export function updateColWidth(state, colIdx) {
+   const { storedWidths, colOffsetIntervalTree} = state;
   
-   const oldWidth = state.storedWidths[colIdx];
-   var newWidth=state.getScrollableColumns(colIdx).width;
-  
-   if (newWidth !== oldWidth) {
-     colOffsetIntervalTree.set(colIdx, newWidth);
-     storedWidths[colIdx] = newWidth;
-     state.scrollContentWidth += newWidth - oldWidth;
+   const oldWidth = storedWidths[colIdx];
+   var {width,flexGrow}=state.getScrollableColumns(colIdx);
+   if(state.totalFlexGrow && flexGrow){
+    width+= Math.floor(flexGrow*(state.widthVacant)/(state.totalFlexGrow));
+  }
+   if (width !== oldWidth) {
+     colOffsetIntervalTree.set(colIdx, width);
+     storedWidths[colIdx] = width;
+     state.scrollContentWidth += width - oldWidth;
    }
    
    return storedWidths[colIdx];
  }
+ export function updateFixedColWidth(state,colIdx){
+  const {fixedStoredWidths}=state;
+  const oldWidth=fixedStoredWidths[colIdx];
+  var {width,flexGrow}=state.getFixedColumns(colIdx);
+  if(state.totalFlexGrow && flexGrow){
+    width+= Math.floor(flexGrow*(state.widthVacant)/(state.totalFlexGrow));
+  }
+  if(width!=oldWidth){
+    fixedStoredWidths[colIdx]=width;
+    state.fixedColumnsWidth+=width-oldWidth
+    state.fixedContentWidth+=width-oldWidth;
+  }
+  return fixedStoredWidths[colIdx];
+
+ }
+ export function updateFixedRightColWidth(state,colIdx){
+  const {fixedRightStoredWidths}=state;
+  const oldWidth=fixedRightStoredWidths[colIdx];
+  var {width,flexGrow}=state.getFixedRightColumns(colIdx);
+  if(state.totalFlexGrow && flexGrow){
+    width+= Math.floor(flexGrow*(state.widthVacant)/(state.totalFlexGrow));
+  }
+  if(width!=oldWidth){
+    fixedRightStoredWidths[colIdx]=width;
+    state.fixedRightColumnsWidth+=width-oldWidth;
+    state.fixedContentWidth+=width-oldWidth;
+  }
+  return fixedRightStoredWidths[colIdx];
+}
  

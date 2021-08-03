@@ -291,7 +291,6 @@ class FixedDataTableCellGroupImpl extends React.Component {
         onColumnResizeEnd={onColumnResizeEndCallback}
         onColumnReorderEnd={onColumnReorderEndCallback}
         rowIndex={rowIndex}
-        index={index}
         columnKey={columnProps.columnKey}
         width={columnProps.width}
         left={left}
@@ -301,11 +300,9 @@ class FixedDataTableCellGroupImpl extends React.Component {
         isRTL={this.props.isRTL}
         fake={fake}
         visible={visible}
-        isFixed={this.props.isFixed}
         scrollToX={this.props.scrollToX}
         toggleCellsRecycling={this.toggleCellsRecycling}
         getCellGroupWidth={this.getCellGroupWidth}
-        offsetLeft={this.props.offsetLeft}
       />
     );
   };

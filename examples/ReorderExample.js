@@ -9,7 +9,6 @@ import { TextCell } from './helpers/cells';
 import { Table, Column, Plugins } from 'fixed-data-table-2';
 import React from 'react';
 import _ from 'lodash';
-
 var columnTitles = {
   firstName: 'First Name',
   lastName: 'Last Name',
@@ -31,8 +30,7 @@ var columnWidths = {
 };
 
 var fixedColumns = [
-  'firstName',
-  'lastName'
+ 
 ];
 
 class ReorderExample extends React.Component {
@@ -50,6 +48,10 @@ class ReorderExample extends React.Component {
         'sentence',
         'companyName'
       ],
+      
+     columns: [],
+     columns1:[],
+     columns2:[],
       isReordering: {},
     };
   }
@@ -84,9 +86,44 @@ class ReorderExample extends React.Component {
   };
 
   render() {
-    const { dataList, isReordering } = this.state;
+    const { dataList, isReordering ,columns,columns1,columns2} = this.state;
     const onColumnReorderEndCallback = this._onColumnReorderEndCallback;
-    const onColumnReorderStart = this.onColumnReorderStart
+    const onColumnReorderStart = this.onColumnReorderStart;
+  //  var { dataList, columnWidths } = this.state;
+    const getFixedColumns= (index)=>{
+      return this.state.columns1[index];
+    }
+    const getScrollableColumns=(index)=>{
+      return this.state.columns[index];
+    }
+    const getFixedRightColumns=(index)=>{
+      return this.state.columns2[index];
+    }
+    
+    this.state.columnOrder.map(function (columnKey, i) {
+      const column=
+        {
+          allowCellsisReordering:_.get(isReordering, columnKey, true),
+          columnKey:columnKey,
+          key:i,
+          header:
+            <Plugins.ReorderCell
+              onColumnReorderStart={onColumnReorderStart}
+              onColumnReorderEnd={onColumnReorderEndCallback}
+            >
+              {columnTitles[columnKey]}
+            </Plugins.ReorderCell>
+          ,
+          cell:<TextCell data={dataList} />,
+        //  fixed={}
+          width:columnWidths[columnKey]
+        }
+        columns[i]=column;
+        //if(fixedColumns.indexOf(columnKey) === -1)columns[columns.length]=column
+        //else columns1[columns1.length]=column
+    
+    })
+    console.log(columns,columns1)
     return (
       <Table
         rowHeight={30}
@@ -96,27 +133,15 @@ class ReorderExample extends React.Component {
         width={1000}
         height={500}
         {...this.props}
+        getFixedColumns={getFixedColumns}
+        getFixedRightColumns={getFixedRightColumns}
+        getScrollableColumns={getScrollableColumns}
+        fixedColumnsCount={columns1.length}
+        fixedRightColumnsCount={columns2.length}
+        scrollableColumnsCount={columns.length}
+        
       >
-        {this.state.columnOrder.map(function (columnKey, i) {
-          return (
-            <Column
-              allowCellsisReordering={_.get(isReordering, columnKey, true)}
-              columnKey={columnKey}
-              key={i}
-              header={
-                <Plugins.ReorderCell
-                  onColumnReorderStart={onColumnReorderStart}
-                  onColumnReorderEnd={onColumnReorderEndCallback}
-                >
-                  {columnTitles[columnKey]}
-                </Plugins.ReorderCell>
-              }
-              cell={<TextCell data={dataList} />}
-              fixed={fixedColumns.indexOf(columnKey) !== -1}
-              width={columnWidths[columnKey]}
-            />
-          );
-        })}
+        
       </Table>
     );
   }

@@ -703,12 +703,12 @@ class FixedDataTable extends React.Component {
 
     const {
       fixedColumnGroups,
-      fixedColumns,
       fixedRightColumnGroups,
-      fixedRightColumns,
       scrollableColumnGroups
     } = this.props;
+    const fixedColumns=this.props.bufferFixedColumns;
     const scrollableColumns=this.props.bufferScrollableColumns;
+    const fixedRightColumns=this.props.bufferFixedRightColumns;
     const {
       bodyHeight,
       bodyOffsetTop,
@@ -1202,7 +1202,7 @@ class FixedDataTable extends React.Component {
     scrollActions.stopScroll();
 
     if (onScrollEnd) {
-      onScrollEnd(scrollX, scrollY, firstRowIndex, endRowIndex, firstColIndex, endColIndex);
+      onScrollEnd(scrollX, scrollY, firstRowIndex, endRowIndex);
     }
   };
 }

@@ -12,12 +12,13 @@
  'use strict';
 
  import clamp from 'lodash/clamp';
+import { getTotalFlexGrow2 } from '../helper/widthHelper';
  
  import roughHeightsSelector from '../selectors/roughHeights';
  import scrollbarsVisibleSelector from '../selectors/scrollbarsVisible';
  import tableHeightsSelector from '../selectors/tableHeights';
-import updateColProps from './updateColProps';
- import updateColWidth from './updateColWidth';
+import { updateColWidth,updateFixedColWidth,updateFixedRightColWidth } from './updateColWidth';
+
  
  /**
   * Returns data about the cols to render
@@ -34,8 +35,10 @@ import updateColProps from './updateColProps';
   * }} scrollAnchor
   * @return {!Object} The updated state object
   */
- export default function computeRenderedCols(state, scrollAnchor) {
+ export default function computeRenderedCols(state, scrollAnchor,f) {
    const newState = Object.assign({}, state);
+  if(f)
+  getTotalFlexGrow2(newState)
    let colRange = calculateRenderedColRange(newState, scrollAnchor);
  
    const {  scrollContentWidth } = newState;
@@ -93,17 +96,9 @@ import updateColProps from './updateColProps';
    for(var idx=0;idx<state.fixedColumnsCount;idx++){
      cols[idx]=idx;
      colOffsets[idx]=widthUsed;
-     const newWidth=state.getFixedColumns(idx).width;
-     const oldWidth=state.fixedStoredWidths[idx];
-     widthUsed+=newWidth;
-     if(newWidth!=oldWidth){
-       state.fixedColumnsWidth+=newWidth-oldWidth
-       state.fixedStoredWidths[idx]=newWidth;
-       state.fixedContentWidth+=newWidth-oldWidth;
-     }
+     widthUsed+=updateFixedColWidth(state,idx)
      if(widthUsed>bodyWidth)break;
-     }
-  
+   }
      state.fixedCols=cols;
      state.fixedColOffsets=colOffsets;
      
@@ -118,14 +113,7 @@ import updateColProps from './updateColProps';
   for(var idx=0;idx<state.fixedRightColumnsCount;idx++){
     cols[idx]=idx;
     colOffsets[idx]=widthUsed;
-    const newWidth=state.getFixedRightColumns(idx).width;
-     const oldWidth=state.fixedRightStoredWidths[idx];
-     widthUsed+=newWidth;
-     if(newWidth!=oldWidth){
-       state.fixedRightColumnsWidth+=newwidth-oldWidth
-       state.fixedRightStoredWidths[idx]=newwidth;
-       state.fixedContentWidth+=newwidth-oldWidth;
-     }
+    widthUsed+=updateFixedRightColWidth(state,idx)
      if(widthUsed>bodyWidth)break;
      
 
