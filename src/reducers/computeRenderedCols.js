@@ -37,8 +37,11 @@ import { updateColWidth,updateFixedColWidth,updateFixedRightColWidth } from './u
   */
  export default function computeRenderedCols(state, scrollAnchor,f) {
    const newState = Object.assign({}, state);
-  if(f)
+  if(f){
   getTotalFlexGrow2(newState)
+ const{scrollEnabledY}= scrollbarsVisibleSelector(newState);
+ if(newState.widthVacant && scrollEnabledY) newState.widthVacant-=newState.scrollbarYWidth;
+  }
    let colRange = calculateRenderedColRange(newState, scrollAnchor);
  
    const {  scrollContentWidth } = newState;
