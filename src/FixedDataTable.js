@@ -701,14 +701,12 @@ class FixedDataTable extends React.Component {
       ariaRowIndexOffset,
     } = ariaAttributesSelector(this.props);
 
-    const {
-      fixedColumnGroups,
-      fixedRightColumnGroups,
-      scrollableColumnGroups
-    } = this.props;
     const fixedColumns=this.props.bufferFixedColumns;
     const scrollableColumns=this.props.bufferScrollableColumns;
     const fixedRightColumns=this.props.bufferFixedRightColumns;
+    const fixedColumnGroups=this.props.bufferFixedGroups
+    const  fixedRightColumnGroups=this.props.bufferFixedRightGroups;
+    const  scrollableColumnGroups=this.props.bufferScrollableGroups;
     const {
       bodyHeight,
       bodyOffsetTop,
@@ -717,7 +715,6 @@ class FixedDataTable extends React.Component {
       scrollbarXOffsetTop,
       visibleRowsHeight,
     } = tableHeightsSelector(this.props);
-
     const {
       className,
       elementHeights,
@@ -747,7 +744,6 @@ class FixedDataTable extends React.Component {
 
     let groupHeader;
     if (groupHeaderHeight > 0) {
-    
       groupHeader = (
         <FixedDataTableRow
           key="group_header"
@@ -775,14 +771,17 @@ class FixedDataTable extends React.Component {
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
           isHeader={true}
-          colOffsets={this.props.colOffsets}
-          fixedColOffsets={this.props.fixedColOffsets}
-          fixedRightColOffsets={this.props.fixedRightColOffsets}
+          colOffsets={this.props.colGroupOffsets}
+          fixedColOffsets={this.props.fixedColGroupOffsets}
+          fixedRightColOffsets={this.props.fixedRightColGroupOffsets}
+          colsToRender={this.props.groups}
+        fixedColsToRender={this.props.fixedGroups}
+        fixedRightColsToRender={this.props.fixedRightGroups}
           scrollableColumnsWidth={this.props.scrollContentWidth}
           fixedColumnsWidth={this.props.fixedColumnsWidth}
           fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
           scrollToX={this._scrollToX}
-          firstBufferIdx={this.props.firstBufferIdx}
+          firstBufferIdx={0}
         />
       );
     }

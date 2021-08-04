@@ -33,6 +33,7 @@ export function _extractProps(column) {
      'isResizable',
      'pureRendering',
      'width',
+     'columnGroup'
    ]);
  };
  
@@ -63,10 +64,6 @@ export function _addToColumn(columnContainer , column,elementTemplates){
   * Converts React column / column group elements into props and cell rendering templates
   */
  function getColumnTemplates(state) {
-   
- 
-   
- 
    const fixedColumns = {
     cell: [],
     header: [],

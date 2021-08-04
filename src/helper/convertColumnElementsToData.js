@@ -32,6 +32,7 @@ function _extractProps(column) {
     'isResizable',
     'pureRendering',
     'width',
+    'columnGroup'
   ]);
 };
 

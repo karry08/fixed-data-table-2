@@ -105,10 +105,16 @@ function getInitialState() {
     colOffsets:{},
     fixedColOffsets:{},
     fixedRightColOffsets:{},
+    colGroupOffsets:{},
+    fixedColGroupOffsets:{},
+    fixedRightColGroupOffsets:{},
     rows: [], // rowsToRender
     cols:[],
     fixedCols:[],
     fixedRightCols:[],
+    groups:[],
+    fixedGroups:[],
+    fixedRightGroups:[],
     scrollContentHeight: 0,
     scrollContentWidth: 0,
     fixedColumnsWidth:0,
@@ -121,7 +127,12 @@ function getInitialState() {
     scrolling: false,
     scrollingX:false,
     scrollableColumns:[],
+    bufferFixedColumns:[],
     bufferScrollableColumns:[],
+    bufferFixedRightColumns:[],
+    bufferFixedGroups:[],
+    bufferFixedRightGroups:[],
+    bufferScrollableGroups:[],
     fixedColumns:[],
     fixedRightColumns:[],
     fixedColumnsCount:0,
@@ -346,9 +357,9 @@ function initializeColWidthsAndOffsets(state) {
  */
 function setStateFromProps(state, props) {
   const {fixedColumnsCount,fixedRightColumnsCount,scrollableColumnsCount,getFixedColumns,
-  getFixedRightColumns,getScrollableColumns}=props;
+  getFixedRightColumns,getScrollableColumns,getColumnGroups}=props;
   var newState=Object.assign({},state,{fixedColumnsCount,fixedRightColumnsCount,scrollableColumnsCount,
-    getFixedColumns,getFixedRightColumns,getScrollableColumns})
+    getFixedColumns,getFixedRightColumns,getScrollableColumns,getColumnGroups})
   
   var {
     fixedColumns,
