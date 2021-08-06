@@ -31,7 +31,7 @@
   *   changed: boolean,
   * }}
   */
- export function getScrollAnchorX(state, newProps, oldProps) {
+ export function getColumnAnchor(state, newProps, oldProps) {
    if (
 
      newProps.scrollToColumn !== undefined &&
@@ -63,7 +63,7 @@
   * Scroll to a specific position in the grid
   *
   * @param {!Object} state
-  * @param {number} scrollY
+  * @param {number} scrollX
   * @return {{
   *   firstIndex: number,
   *   firstOffset: number,
@@ -74,10 +74,10 @@
  export function scrollTox(state, scrollX) {
    const { availableWidth } = scrollbarsVisibleSelector(state);
    const scrollableColsCount = state.scrollableColumns.cell.length;
-   const { colOffsetIntervalTree, colSettings, scrollContentWidth } = state;
-   const { colsCount } = colSettings;
+   const { colOffsetIntervalTree, columnSettings, scrollContentWidth } = state;
+   const { columnsCount } = columnSettings;
  
-   if (colsCount === 0) {
+   if (columnsCount === 0) {
      return {
       
        firstIndex: 0,
@@ -99,12 +99,12 @@
    } else {
      // Mark the col which will appear first in the viewport
      // We use this as our "marker" when scrolling even if updating colOffsets
-     // leads to it not being different from the scrollY specified
+     // leads to it not being different from the scrollX specified
      const newColIdx = colOffsetIntervalTree.greatestLowerBound(scrollX);
      firstIndex = clamp(newColIdx, 0, Math.max(scrollableColsCount - 1, 0));
  
      // Record how far into the first col we should scroll
-     // firstOffset is a negative value representing how much larger scrollY is
+     // firstOffset is a negative value representing how much larger scrollX is
      // than the scroll position of the first col in the viewport
      const firstColPosition = colOffsetIntervalTree.sumUntil(firstIndex);
      firstOffset = firstColPosition - scrollX;
@@ -140,10 +140,10 @@
  function scrollToColX(state, colIndex) {
   const { availableWidth } = scrollbarsVisibleSelector(state);
   const scrollableColsCount=state.scrollableColumns.cell.length;
-   const { colOffsetIntervalTree, colSettings, storedWidths, scrollX } = state;
-   const { colsCount } = colSettings;
+   const { colOffsetIntervalTree, columnSettings, storedWidths, scrollX } = state;
+   const { columnsCount } = columnSettings;
  
-   if (colsCount === 0) {
+   if (columnsCount === 0) {
      return {
        firstIndex: 0,
        firstOffset: 0,

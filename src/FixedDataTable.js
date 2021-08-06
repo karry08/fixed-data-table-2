@@ -1012,7 +1012,7 @@ class FixedDataTable extends React.Component {
         rowExpanded={props.rowExpanded}
         rowKeyGetter={props.rowKeyGetter}
         rowSettings={props.rowSettings}
-        colSettings={props.colSettings}
+        columnSettings={props.columnSettings}
         scrollLeft={props.scrollX}
         scrollTop={props.scrollY}
         scrollableColumns={scrollableCellTemplates}

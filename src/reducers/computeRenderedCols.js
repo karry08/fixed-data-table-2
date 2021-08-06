@@ -157,7 +157,7 @@
      };
    }
  
-   // If our first or last index is greater than our colsCount,
+   // If our first or last index is greater than our columnsCount,
    // treat it as if the last col is at the bottom of the viewport
    let { firstIndex, firstOffset, lastIndex } = scrollAnchor;
  

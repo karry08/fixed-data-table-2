@@ -85,7 +85,7 @@
    tableSize,
    scrollbarXHeight,
    scrollbarYWidth,
-   colSettings,
+   columnSettings,
    fixedContentWidth,
    scrollContentWidth
  ) {
@@ -157,7 +157,7 @@
      maxAvailableHeight: Math.max(maxAvailableHeight, 0),
      reservedHeight,
      scrollStateX,
-     bufferColCount: getBufferColCount(maxAvailableWidth, colSettings),
+     bufferColCount: getBufferColCount(maxAvailableWidth, columnSettings),
      minAvailableWidth:Math.max(minAvailableWidth, 0),
      maxAvailableWidth: Math.max(maxAvailableWidth, 0)
    };
@@ -214,14 +214,14 @@
      MAX_BUFFER_ROWS
    );
  }
- function getBufferColCount(maxAvailableWidth,colSettings) {
-   const { bufferColCount ,minColumn} = colSettings;
+ function getBufferColCount(maxAvailableWidth,columnSettings) {
+   const { bufferColCount ,minColumnWidth} = columnSettings;
    if (bufferColCount !== undefined) {
      return bufferColCount;
    }
  
   // const fullRowHeight = rowHeight + subRowHeight;
-   const avgVisibleColCount = Math.ceil(maxAvailableWidth / minColumn) + 1;
+   const avgVisibleColCount = Math.ceil(maxAvailableWidth / minColumnWidth) + 1;
    return clamp(
      Math.floor(avgVisibleColCount / 2),
      MIN_BUFFER_COLS,
@@ -240,7 +240,7 @@
      state => state.tableSize,
      state => state.scrollbarXHeight,
      state => state.scrollbarYWidth,
-     state => state.colSettings,
+     state => state.columnSettings,
      state => state.fixedContentWidth,
      state => state.scrollContentWidth
     

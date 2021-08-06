@@ -146,7 +146,7 @@ class FixedDataTableContainer extends React.Component {
       'fixedContentWidth',
       'scrollLeft',
       'scrollToColumn',
-      'colSettings',
+      'columnSettings',
       'firstColIndex',
       'firstColOffset',
       'endColIndex',
