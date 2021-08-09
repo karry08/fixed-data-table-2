@@ -102,7 +102,9 @@ class ObjectDataExample extends React.Component {
         getScrollableColumns={getScrollableColumns}
         fixedColumnsCount={3}
         fixedRightColumnsCount={0}
-        scrollableColumnsCount={5}>
+        scrollableColumnsCount={5}
+        columnWidth={200}
+        >
         
        
       </Table>

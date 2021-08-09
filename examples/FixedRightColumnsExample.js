@@ -100,7 +100,8 @@ class FixedRightColumnsExample extends React.Component {
         getScrollableColumns={getScrollableColumns}
         fixedColumnsCount={1}
         fixedRightColumnsCount={2}
-        scrollableColumnsCount={5}>
+        scrollableColumnsCount={5}
+        columnWidth={100}>
         
       </Table>
     );

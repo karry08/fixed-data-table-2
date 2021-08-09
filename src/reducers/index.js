@@ -315,8 +315,8 @@ function initializeColWidthsAndOffsets(state) {
   const fixedRightStoredWidths = [];
   let minColumn=-1;
   var fixedContentWidth=0;
-  for (var idx =0;idx<state.scrollableColumns.cell.length;idx++){
-    var width=state.scrollableColumns.cell[idx].props.width;
+  for (var idx =0;idx<state.scrollableColumnsCount;idx++){
+    var width=state.columnWidth;
     storedWidths.push(width);
 
     if(minColumn==-1)minColumn=width;
@@ -324,13 +324,13 @@ function initializeColWidthsAndOffsets(state) {
    
     scrollContentWidth+=width; 
   }
-  for (var idx =0;idx<state.fixedColumns.cell.length;idx++){
-    fixedColumnsWidth+=state.fixedColumns.cell[idx].props.width;
-    fixedStoredWidths[idx]=state.fixedColumns.cell[idx].props.width;
+  for (var idx =0;idx<state.fixedColumnsCount;idx++){
+    fixedColumnsWidth+=state.columnWidth;
+    fixedStoredWidths[idx]=state.columnWidth;
   }
-  for (var idx =0;idx<state.fixedRightColumns.cell.length;idx++){
-    fixedRightColumnsWidth+=state.fixedRightColumns.cell[idx].props.width;
-    fixedRightStoredWidths[idx]=state.fixedRightColumns.cell[idx].props.width
+  for (var idx =0;idx<state.fixedRightColumnsCount;idx++){
+    fixedRightColumnsWidth+=state.columnWidth;
+    fixedRightStoredWidths[idx]=state.columnWidth
   }
   
   fixedContentWidth=fixedRightColumnsWidth+fixedColumnsWidth;
@@ -357,22 +357,10 @@ function initializeColWidthsAndOffsets(state) {
  */
 function setStateFromProps(state, props) {
   const {fixedColumnsCount,fixedRightColumnsCount,scrollableColumnsCount,getFixedColumns,
-  getFixedRightColumns,getScrollableColumns,getColumnGroups}=props;
+  getFixedRightColumns,getScrollableColumns,getColumnGroups,columnWidth}=props;
   var newState=Object.assign({},state,{fixedColumnsCount,fixedRightColumnsCount,scrollableColumnsCount,
-    getFixedColumns,getFixedRightColumns,getScrollableColumns,getColumnGroups})
+    getFixedColumns,getFixedRightColumns,getScrollableColumns,getColumnGroups,columnWidth})
   
-  var {
-    fixedColumns,
-    fixedRightColumns,
-    scrollableColumns,
-    columnProps
-  } = getColumnTemplates(newState);
-  newState=Object.assign({},newState,{
-    fixedColumns,
-    fixedRightColumns,
-    scrollableColumns,
-    columnProps
-  })
   newState.elementHeights = Object.assign({}, newState.elementHeights,
     pick(props, ['cellGroupWrapperHeight', 'footerHeight', 'groupHeaderHeight', 'headerHeight']));
  /* if (!useGroupHeader) {

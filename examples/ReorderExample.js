@@ -139,6 +139,7 @@ class ReorderExample extends React.Component {
         fixedColumnsCount={columns1.length}
         fixedRightColumnsCount={columns2.length}
         scrollableColumnsCount={columns.length}
+        columnWidth={100}
         
       >
         

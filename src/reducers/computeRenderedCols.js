@@ -45,7 +45,7 @@ import { updateColWidth,updateFixedColWidth,updateFixedRightColWidth } from './u
    let colRange = calculateRenderedColRange(newState, scrollAnchor);
  
    const {  scrollContentWidth } = newState;
- const scrollableColsCount=newState.scrollableColumns.cell.length
+ const scrollableColsCount=newState.scrollableColumnsCount;
   const { bodyWidth } = tableHeightsSelector(newState);
   computeRenderedFixedCols(newState,bodyWidth);
   computeRenderedFixedRightCols(newState,bodyWidth);
@@ -95,7 +95,6 @@ import { updateColWidth,updateFixedColWidth,updateFixedRightColWidth } from './u
    var cols=[];
     var colOffsets={};
    
-    if(!state.fixedColumns.cell)return;
    for(var idx=0;idx<state.fixedColumnsCount;idx++){
      cols[idx]=idx;
      colOffsets[idx]=widthUsed;
@@ -112,7 +111,6 @@ import { updateColWidth,updateFixedColWidth,updateFixedRightColWidth } from './u
   var cols=[];
   var colOffsets={};
   
-  if(!state.fixedRightColumns.cell)return;
   for(var idx=0;idx<state.fixedRightColumnsCount;idx++){
     cols[idx]=idx;
     colOffsets[idx]=widthUsed;
@@ -154,7 +152,7 @@ import { updateColWidth,updateFixedColWidth,updateFixedRightColWidth } from './u
  function calculateRenderedColRange(state, scrollAnchor,props) {
    const { bufferColCount, maxAvailableWidth } = roughHeightsSelector(state);
   
-   const scrollableColsCount = state.scrollableColumns.cell.length;
+   const scrollableColsCount = state.scrollableColumnsCount;
  
    if (scrollableColsCount === 0) {
      return {

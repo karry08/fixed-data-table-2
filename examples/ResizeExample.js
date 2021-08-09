@@ -121,6 +121,7 @@ class ResizeExample extends React.Component {
         fixedColumnsCount={1}
         fixedRightColumnsCount={0}
         scrollableColumnsCount={3}
+        columnWidth={100}
         
       >
        

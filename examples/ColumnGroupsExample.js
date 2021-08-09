@@ -92,7 +92,7 @@ class ColumnGroupsExample extends React.Component {
         fixedColumnsCount={2}
         fixedRightColumnsCount={0}
         scrollableColumnsCount={2}
-        
+        columnWidth={100}
         >
        
       </Table>

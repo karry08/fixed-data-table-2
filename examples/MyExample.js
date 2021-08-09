@@ -89,6 +89,7 @@
             fixedColumnsCount={1}
             fixedRightColumnsCount={2}
             scrollableColumnsCount={100000}
+            columnWidth={100}
             >
           </Table>
         );

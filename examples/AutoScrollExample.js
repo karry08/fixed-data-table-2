@@ -140,6 +140,7 @@ class AutoScrollExample extends React.Component {
         fixedColumnsCount={1}
         fixedRightColumnsCount={2}
         scrollableColumnsCount={10000}
+        columnWidth={100}
       >
       </Table>
     );
