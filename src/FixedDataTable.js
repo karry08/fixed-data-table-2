@@ -701,15 +701,12 @@ class FixedDataTable extends React.Component {
       ariaRowIndexOffset,
     } = ariaAttributesSelector(this.props);
 
-    const {
-      fixedColumnGroups,
-      fixedColumns,
-      fixedRightColumnGroups,
-      fixedRightColumns,
-      scrollableColumnGroups,
-      scrollableColumns,
-    } = columnTemplatesSelector(this.props);
-
+    const fixedColumns=this.props.bufferFixedColumns;
+    const scrollableColumns=this.props.bufferScrollableColumns;
+    const fixedRightColumns=this.props.bufferFixedRightColumns;
+    const fixedColumnGroups=this.props.bufferFixedGroups
+    const  fixedRightColumnGroups=this.props.bufferFixedRightGroups;
+    const  scrollableColumnGroups=this.props.bufferScrollableGroups;
     const {
       bodyHeight,
       bodyOffsetTop,
@@ -718,7 +715,6 @@ class FixedDataTable extends React.Component {
       scrollbarXOffsetTop,
       visibleRowsHeight,
     } = tableHeightsSelector(this.props);
-
     const {
       className,
       elementHeights,
@@ -775,7 +771,17 @@ class FixedDataTable extends React.Component {
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
           isHeader={true}
+          colOffsets={this.props.colGroupOffsets}
+          fixedColOffsets={this.props.fixedColGroupOffsets}
+          fixedRightColOffsets={this.props.fixedRightColGroupOffsets}
+          colsToRender={this.props.groups}
+        fixedColsToRender={this.props.fixedGroups}
+        fixedRightColsToRender={this.props.fixedRightGroups}
+          scrollableColumnsWidth={this.props.scrollContentWidth}
+          fixedColumnsWidth={this.props.fixedColumnsWidth}
+          fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
           scrollToX={this._scrollToX}
+          firstBufferIdx={0}
         />
       );
     }
@@ -815,6 +821,16 @@ class FixedDataTable extends React.Component {
           showScrollbarY={scrollEnabledY}
           scrollbarYWidth={scrollbarYWidth}
           isRTL={this.props.isRTL}
+          colsToRender={this.props.cols}
+        fixedColsToRender={this.props.fixedCols}
+        fixedRightColsToRender={this.props.fixedRightCols}
+        colOffsets={this.props.colOffsets}
+        fixedColOffsets={this.props.fixedColOffsets}
+        fixedRightColOffsets={this.props.fixedRightColOffsets}
+        scrollableColumnsWidth={this.props.scrollContentWidth}
+          fixedColumnsWidth={this.props.fixedColumnsWidth}
+          fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
+          firstBufferIdx={this.props.firstBufferIdx}
         />
       );
     }
@@ -857,6 +873,18 @@ class FixedDataTable extends React.Component {
         isRTL={this.props.isRTL}
         isHeader={true}
         scrollToX={this._scrollToX}
+        colsToRender={this.props.cols}
+        fixedColsToRender={this.props.fixedCols}
+        fixedRightColsToRender={this.props.fixedRightCols}
+        colOffsets={this.props.colOffsets}
+        fixedColOffsets={this.props.fixedColOffsets}
+        fixedRightColOffsets={this.props.fixedRightColOffsets}
+        scrollableColumnsWidth={this.props.scrollContentWidth}
+        fixedColumnsWidth={this.props.fixedColumnsWidth}
+        fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
+        firstViewportColIndex={this.props.firstColIndex}
+        endViewportColIndex={this.props.endColIndex}
+        firstBufferIdx={this.props.firstBufferIdx}
       />
     );
 
@@ -956,6 +984,7 @@ class FixedDataTable extends React.Component {
   ) /*object*/ => {
     const { scrollEnabledY } = scrollbarsVisible(this.props);
     const props = this.props;
+   
     return (
       <FixedDataTableBufferedRows
         ariaRowIndexOffset={ariaRowIndexOffset}
@@ -964,8 +993,11 @@ class FixedDataTable extends React.Component {
         fixedRightColumns={fixedRightCellTemplates}
         firstViewportRowIndex={props.firstRowIndex}
         endViewportRowIndex={props.endRowIndex}
+        firstViewportColIndex={props.firstColIndex}
+        endViewportColIndex={props.endColIndex}
         height={bodyHeight}
         offsetTop={offsetTop}
+  //      offsetLeft={offsetTop}
         onRowClick={props.onRowClick}
         onRowContextMenu={props.onRowContextMenu}
         onRowDoubleClick={props.onRowDoubleClick}
@@ -982,16 +1014,27 @@ class FixedDataTable extends React.Component {
         rowExpanded={props.rowExpanded}
         rowKeyGetter={props.rowKeyGetter}
         rowSettings={props.rowSettings}
+        colSettings={props.colSettings}
         scrollLeft={props.scrollX}
         scrollTop={props.scrollY}
         scrollableColumns={scrollableCellTemplates}
         showLastRowBorder={true}
         width={props.tableSize.width}
         rowsToRender={props.rows}
+        colsToRender={props.cols}
+        fixedColsToRender={props.fixedCols}
+        fixedRightColsToRender={props.fixedRightCols}
         rowOffsets={props.rowOffsets}
         showScrollbarY={scrollEnabledY}
+        colOffsets={props.colOffsets}
+        fixedColOffsets={props.fixedColOffsets}
+        fixedRightColOffsets={props.fixedRightColOffsets}
+        scrollableColumnsWidth={this.props.scrollContentWidth}
+        fixedColumnsWidth={this.props.fixedColumnsWidth}
+        fixedRightColumnsWidth={this.props.fixedRightColumnsWidth}
         scrollbarYWidth={props.scrollbarYWidth}
         isRTL={props.isRTL}
+        firstBufferIdx={this.props.firstBufferIdx}
       />
     );
   };
@@ -1040,6 +1083,7 @@ class FixedDataTable extends React.Component {
       //NOTE (asif) This is a hacky workaround to prevent FDT from setting its internal state
       if (onHorizontalScroll ? onHorizontalScroll(roundedX) : true) {
         scrollActions.scrollToX(roundedX);
+    
       }
     }
   };
@@ -1098,6 +1142,8 @@ class FixedDataTable extends React.Component {
     const {
       endRowIndex: oldEndRowIndex,
       firstRowIndex: oldFirstRowIndex,
+      endColIndex: oldEndColIndex,
+      firstColIndex: oldFirstColIndex,
       scrollX: oldScrollX,
       scrollY: oldScrollY,
       tableSize: { ownerHeight: oldOwnerHeight },
@@ -1139,6 +1185,8 @@ class FixedDataTable extends React.Component {
     const {
       endRowIndex,
       firstRowIndex,
+      endColIndex,
+      firstColIndex,
       onScrollEnd,
       scrollActions,
       scrollX,

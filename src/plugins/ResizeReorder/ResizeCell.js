@@ -60,7 +60,7 @@ class ResizeCell extends React.PureComponent {
         </FixedDataTableCellDefault>
       );
     }
-
+  
     return (
       <>
         <ResizerKnob

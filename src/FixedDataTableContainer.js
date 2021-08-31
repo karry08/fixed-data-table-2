@@ -64,6 +64,7 @@ class FixedDataTableContainer extends React.Component {
 
     this.unsubscribe = this.reduxStore.subscribe(this.update);
     this.state = this.getBoundState();
+   
   }
 
   componentWillReceiveProps(nextProps) {
@@ -92,6 +93,7 @@ class FixedDataTableContainer extends React.Component {
       isRTL: this.props.isRTL,
       touchEnabled: this.props.touchEnabled,
     };
+   // console.log(this.state.bufferScrollableColumns)
     const fdt = (
       <FixedDataTable
         {...this.props}
@@ -99,6 +101,7 @@ class FixedDataTableContainer extends React.Component {
         scrollActions={this.scrollActions}
       />
     );
+  //  console.log(this.props)
     // For backward compatibility, by default we render FDT-2 scrollbars
     if (this.props.defaultScrollbars) {
       return (
@@ -118,7 +121,6 @@ class FixedDataTableContainer extends React.Component {
     const state = this.reduxStore.getState();
     const boundState = pick(state, [
       'columnGroupProps',
-      'columnProps',
       'columnReorderingData',
       'columnResizingData',
       'elementHeights',
@@ -140,7 +142,42 @@ class FixedDataTableContainer extends React.Component {
       'scrollJumpedX',
       'scrollJumpedY',
       'tableSize',
+      'scrollContentWidth',
+      'fixedRightColumnsWidth',
+      'fixedColumnsWidth',
+      'fixedContentWidth',
+      'scrollLeft',
+      'scrollToColumn',
+      'colSettings',
+      'firstColIndex',
+      'firstBufferIdx',
+     'firstColOffset',
+     'endColIndex',
+     'cols',
+     'fixedCols',
+     'fixedRightCols',
+     'colOffsets',
+     'fixedColOffsets',
+      'fixedRightColOffsets',
+     'fixedColumnGroups',
+    'bufferFixedColumns',
+    'bufferFixedRightColumnGroups',
+    'bufferFixedRightColumns',
+    'scrollableColumnGroups',
+    'bufferScrollableColumns',
+    'colGroupOffsets',
+    'fixedColGroupOffsets',
+    'fixedRightColGroupOffsets',
+    'groups',
+    'fixedGroups',
+    'fixedRightGroups',
+    'bufferFixedGroups',
+    'bufferFixedRightGroups',
+    'bufferScrollableGroups',
+      
+     
     ]);
+   
     return boundState;
   }
 
